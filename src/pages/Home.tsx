@@ -1,11 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { builders } from '../data/builders';
 
-
 export default function Home() {
   const navigate = useNavigate();
-
-
 
   const showDemoMessage = (title: string, message: string) => {
     alert(` ${title}\n\n${message}\n\n(Full functionality would be implemented here.)`);
@@ -42,11 +39,15 @@ return (
           {builders.map((builder) => (
             <div
               key={builder.id}
-              className="bg-white rounded-[1.75rem] p-6 pb-7 transition-all duration-300 cursor-pointer shadow-lg border border-slate-300/50 flex flex-col h-full hover:-translate-y-1 hover:shadow-2xl hover:border-blue-200 card-hover"
+              className="group bg-white rounded-[1.75rem] p-6 pb-7 transition-all duration-300 cursor-pointer shadow-lg border border-slate-300/50 flex flex-col h-full hover:-translate-y-1 hover:shadow-2xl hover:border-blue-200 card-hover"
               onClick={() => navigate(`${builder.path}`)}
             >
-              <div className="text-4xl text-blue-600 bg-blue-50 w-14 h-14 flex items-center justify-center rounded-xl mb-5 hover:bg-blue-600 hover:text-white icon-hover">
-                <i className={builder.icon}></i>
+              <div className="bg-blue-50 w-14 h-14 flex items-center justify-center rounded-xl mb-5 group-hover:bg-blue-600 transition-colors duration-300 icon-hover">
+                <img
+                  src={builder.image}
+                  alt={builder.name}
+                  className="w-9 h-9 object-contain"
+                />
               </div>
               <h3 className="text-xl font-bold mb-2.5 text-slate-900">{builder.name}</h3>
               <div className="text-sm leading-relaxed text-slate-600 mb-5 flex-1">{builder.desc}</div>
