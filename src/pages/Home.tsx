@@ -14,8 +14,8 @@ return (
     <div className="w-full flex flex-wrap justify-between items-center gap-4 border-b-2 border-blue-500/20 pb-4 mb-6 bg-grey-50/90 backdrop-blur-sm z-10 header-section">
       {/* Left Section */}
       <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
-        <div className="bg-gradient-to-br from-blue-800 to-blue-500 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-xl sm:rounded-2xl shadow-lg">
-          <i className="fas fa-hard-hat text-xl sm:text-2xl text-white"></i>
+        <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-xl sm:rounded-2xl shadow-lg">
+          <img src="src\assets\doc.png" className="fas fa-hard-hat text-xl sm:text-2xl text-white"></img>
         </div>
         <div>
           <h1 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-blue-600 bg-clip-text text-transparent tracking-tight">

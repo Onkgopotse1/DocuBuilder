@@ -28,7 +28,7 @@ export default function InvoicePreview() {
           onClick={() => navigate('/invoice-builder')}
         >
           <i className="fas fa-arrow-left text-xs"></i>
-          <span className="hidden md:inline ml-1">Back to Invoice Builder</span>
+          <span className="">Back to Invoice Builder</span>
         </button>
       </div>
     </nav>

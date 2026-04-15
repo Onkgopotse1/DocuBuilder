@@ -17,9 +17,11 @@ export default function InvoiceBuilder() {
     subtotal,
     taxAmount,
     total,
+    generatePDF,
+
   } = useInvoice();
 
-  const handlePreviewClick = () => {
+  const handlePreviewClick = () => {      
     navigate('/invoice-preview');
   };
 
@@ -29,17 +31,15 @@ export default function InvoiceBuilder() {
 <nav className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-3 flex justify-between items-center z-50 shadow-sm">
   {/* Back Button: Hide text on mobile */}
 <button
-  className="flex items-center justify-center rounded-full w-12 h-12 md:w-10 md:h-10 bg-slate-100 hover:bg-slate-200 rounded-lg overflow-hidden"
+  className="flex items-center justify-center rounded-full w-11 h-11 md:w-10 md:h-10 bg-slate-100 hover:bg-slate-200 rounded-lg overflow-hidden"
   onClick={() => navigate('/')}
 >
   <i className="fas fa-arrow-left text-xs"></i>
-  <span className="hidden md:inline">
     <img
       src="./public/left-arrow.png"
       alt="Back"
       className="w-full h-full object-contain rounded-full"
     />
-  </span>
 </button>
   
   <div className="flex gap-2 md:gap-3">
@@ -55,7 +55,7 @@ export default function InvoiceBuilder() {
     {/* Download Button: Hide text on mobile */}
     <button className="flex items-center justify-center px-3 py-2 md:px-5 bg-[#2563eb] text-white text-sm font-semibold rounded-lg hover:bg-[#1d4ed8] transition shadow-md shadow-blue-200 gap-2">
       <i className="fas fa-download"></i>
-      <span className="hidden md:inline">Download</span>
+      <span onClick={generatePDF} className="">Download</span>
     </button>
   </div>
 </nav>
