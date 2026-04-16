@@ -19,7 +19,7 @@ export default function InvoicePreview() {
 
   return (
 <div className="min-h-screen bg-gradient-to-br from-[#e9f0f5] to-[#d9e2ec] font-['Inter',system-ui,-apple-system,'Segoe_UI',Roboto,sans-serif] py-8 px-6 text-[#1e293b]">
-  <div className="max-w-[1600px] mx-auto pt-20"> {/* Added pt-20 here to create space below the fixed nav */}
+  <div className="max-w-[1600px] mx-auto pt-20"> 
 
     <nav className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-3 flex justify-between items-center z-50 shadow-sm">
       <div className="flex gap-2 md:gap-3">
@@ -34,7 +34,7 @@ export default function InvoicePreview() {
     </nav>
 
     {/* Preview Panel */}
-    <div className="bg-white rounded-3xl shadow-[0_20px_35px_-12px_rgba(0,0,0,0.15)] p-6 sticky top-24"> {/* Adjusted top-6 to top-24 to account for the nav height while scrolling */}
+    <div className="bg-white rounded-3xl shadow-[0_20px_35px_-12px_rgba(0,0,0,0.15)] p-6 sticky top-24"> 
       <h2 className="text-xl font-semibold text-[#0f2b3d] flex items-center gap-2 border-b-2 border-slate-200 pb-2 mb-4">
         🔍 Live Invoice Preview
       </h2>
