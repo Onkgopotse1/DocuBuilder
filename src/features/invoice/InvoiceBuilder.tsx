@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useInvoice, formatMoney } from '../../context/InvoiceContext.tsx';
+import { useInvoice, formatMoney } from './InvoiceContext.tsx';
 
 export default function InvoiceBuilder() {
   const navigate = useNavigate();
