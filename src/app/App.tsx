@@ -1,5 +1,5 @@
 import { Routes, Route, } from "react-router-dom";
-import { InvoiceProvider } from "../context/InvoiceContext.tsx";
+import { InvoiceProvider } from "../features/invoice/InvoiceContext.tsx";
 
 import Home from "../pages/Home.tsx";
 
