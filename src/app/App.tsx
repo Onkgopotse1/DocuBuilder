@@ -1,5 +1,5 @@
 import { Routes, Route, } from "react-router-dom";
-import { InvoiceProvider } from "../features/invoice/InvoiceContext.tsx";
+
 
 import Home from "../pages/Home.tsx";
 
@@ -27,7 +27,7 @@ import TimesheetPreviw from "../features/timesheet/TimesheetPreview.tsx";
 
 function App() {
   return (
-    <InvoiceProvider>
+
     <Routes>
       <Route path="/" element={<Home />} />
 
@@ -58,7 +58,7 @@ function App() {
       <Route path="/timesheet-preview" element={<TimesheetPreviw />} />
 
     </Routes>
-    </InvoiceProvider>
+ 
   );
 }
 
