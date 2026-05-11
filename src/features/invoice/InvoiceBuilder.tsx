@@ -1,36 +1,52 @@
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
+import  { useDocument } from "../../context/DocumentContext";
+import type { InvoiceItem } from "../../context/DocumentContext";
 
 export default function InvoiceBuilder() {
   const navigate = useNavigate();
+  const { document, setDocument } = useDocument();
+  const invoice = document.invoice;
 
-  const handlePreviewClick = () => {      
-    navigate('/invoice-preview');
+  const updateField = (field: keyof typeof invoice, value: any) => {
+    setDocument((prev) => ({ ...prev, invoice: { ...prev.invoice, [field]: value } }));
   };
+
+  const addItem = () => {
+    const newItem: InvoiceItem = { description: "", quantity: 1, unitPrice: 0 };
+    setDocument((prev) => ({ ...prev, invoice: { ...prev.invoice, items: [...prev.invoice.items, newItem] } }));
+  };
+
+  const updateItem = (index: number, field: keyof InvoiceItem, value: any) => {
+    setDocument((prev) => {
+      const items = [...prev.invoice.items];
+      items[index] = { ...items[index], [field]: value };
+      return { ...prev, invoice: { ...prev.invoice, items } };
+    });
+  };
+
+  const removeItem = (index: number) => {
+    setDocument((prev) => ({
+      ...prev,
+      invoice: { ...prev.invoice, items: prev.invoice.items.filter((_, i) => i !== index) },
+    }));
+  };
+
+  const subtotal = invoice.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+  const tax = subtotal * (invoice.taxRate / 100);
+  const total = subtotal + tax;
+
 
   return (
     <div className="min-h-screen bg-slate-50 font-['Inter',system-ui,sans-serif] text-slate-800 pb-12">
-      {/* Fixed Header Navigation */}
       <nav className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex justify-between items-center z-50 shadow-sm">
-        {/* Back Button */}
-        <button 
-          onClick={() => navigate('/')}
-          className="flex items-center justify-center w-11 h-11 md:w-10 md:h-10 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors overflow-hidden"
-        >
+        <button onClick={() => navigate("/")} className="flex items-center justify-center w-11 h-11 md:w-10 md:h-10 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors overflow-hidden">
           <span className="text-slate-600 text-sm">←</span>
         </button>
-        
         <div className="flex gap-3">
-          {/* Preview Button */}
-          <button 
-            onClick={handlePreviewClick}
-            className="flex items-center justify-center px-4 py-2.5 bg-white border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-50 transition-all shadow-sm"
-          >
+          <button onClick={() => navigate("/invoice-preview")} className="flex items-center justify-center px-4 py-2.5 bg-white border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-50 transition-all shadow-sm">
             <span>👁️</span>
             <span className="hidden md:inline ml-2">Preview</span>
           </button>
-
-          {/* Download Button */}
           <button className="flex items-center justify-center px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-md shadow-blue-600/20 gap-2">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
             <span>Download</span>
@@ -40,8 +56,6 @@ export default function InvoiceBuilder() {
 
       <div className="max-w-5xl mx-auto pt-32 px-4 md:px-6">
         <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/40 border border-slate-100 overflow-hidden">
-          
-          {/* Client & Invoice Details Section */}
           <div className="p-8 md:p-10 space-y-8">
             <div className="flex items-center gap-4 border-b border-slate-100 pb-6">
               <div className="p-3 bg-blue-50 rounded-xl text-blue-600">
@@ -49,79 +63,36 @@ export default function InvoiceBuilder() {
               </div>
               <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Client & Invoice Details</h2>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">
-                  Client / Company
-                </label>
-                <input
-                  type="text"
-                  defaultValue="Acme Corporation"
-                  placeholder="e.g. Acme Corp"
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50"
-                />
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Client / Company</label>
+                <input type="text" value={invoice.clientName} onChange={(e) => updateField("clientName", e.target.value)} placeholder="e.g. Acme Corp" className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50" />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">
-                  Client Email
-                </label>
-                <input
-                  type="email"
-                  defaultValue="billing@acmecorp.co.za"
-                  placeholder="client@example.com"
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50"
-                />
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Client Email</label>
+                <input type="email" value={invoice.clientEmail} onChange={(e) => updateField("clientEmail", e.target.value)} placeholder="client@example.com" className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50" />
               </div>
             </div>
-
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">
-                Billing Address
-              </label>
-              <textarea
-                rows={2}
-                defaultValue="123 Business Road, Pretoria, Gauteng, South Africa"
-                placeholder="Street address, City, Country"
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50 resize-none"
-              />
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Billing Address</label>
+              <textarea rows={2} value={invoice.clientAddress} onChange={(e) => updateField("clientAddress", e.target.value)} placeholder="Street address, City, Country" className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50 resize-none" />
             </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">
-                  Invoice Number
-                </label>
-                <input
-                  type="text"
-                  defaultValue="INV-2026-001"
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none"
-                />
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Invoice Number</label>
+                <input type="text" value={invoice.invoiceNumber} onChange={(e) => updateField("invoiceNumber", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">
-                  Invoice Date
-                </label>
-                <input
-                  type="date"
-                  defaultValue="2026-05-03"
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none"
-                />
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Invoice Date</label>
+                <input type="date" value={invoice.invoiceDate} onChange={(e) => updateField("invoiceDate", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">
-                  Tax Rate (%)
-                </label>
-                <input
-                  type="number"
-                  defaultValue={15}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none"
-                />
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Tax Rate (%)</label>
+                <input type="number" value={invoice.taxRate} onChange={(e) => updateField("taxRate", parseFloat(e.target.value) || 0)} className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" />
               </div>
             </div>
           </div>
 
-          {/* Line Items Section */}
           <div className="px-8 md:px-10 pb-10 space-y-6">
             <div className="flex items-center justify-between border-b border-slate-100 pb-6">
               <div className="flex items-center gap-4">
@@ -143,91 +114,47 @@ export default function InvoiceBuilder() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {/* Static Item 1 */}
-                  <tr className="group hover:bg-slate-50/50 transition-colors">
-                    <td className="p-3">
-                      <input
-                        defaultValue="Web Application Development"
-                        className="w-full px-4 py-2.5 bg-transparent border border-transparent rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none"
-                      />
-                    </td>
-                    <td className="p-3">
-                      <input
-                        type="number"
-                        defaultValue={10}
-                        className="w-full px-4 py-2.5 bg-transparent border border-transparent rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none"
-                      />
-                    </td>
-                    <td className="p-3">
-                      <input
-                        type="number"
-                        defaultValue={1500}
-                        className="w-full px-4 py-2.5 bg-transparent border border-transparent rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none"
-                      />
-                    </td>
-                    <td className="p-3 text-center">
-                      <button className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                        ✕
-                      </button>
-                    </td>
-                  </tr>
-                  {/* Static Item 2 */}
-                  <tr className="group hover:bg-slate-50/50 transition-colors">
-                    <td className="p-3">
-                      <input
-                        defaultValue="UI/UX Design Services"
-                        className="w-full px-4 py-2.5 bg-transparent border border-transparent rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none"
-                      />
-                    </td>
-                    <td className="p-3">
-                      <input
-                        type="number"
-                        defaultValue={5}
-                        className="w-full px-4 py-2.5 bg-transparent border border-transparent rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none"
-                      />
-                    </td>
-                    <td className="p-3">
-                      <input
-                        type="number"
-                        defaultValue={800}
-                        className="w-full px-4 py-2.5 bg-transparent border border-transparent rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none"
-                      />
-                    </td>
-                    <td className="p-3 text-center">
-                      <button className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                        ✕
-                      </button>
-                    </td>
-                  </tr>
+                  {invoice.items.map((item, idx) => (
+                    <tr key={idx} className="group hover:bg-slate-50/50 transition-colors">
+                      <td className="p-3">
+                        <input value={item.description} onChange={(e) => updateItem(idx, "description", e.target.value)} className="w-full px-4 py-2.5 bg-transparent border border-transparent rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none" />
+                      </td>
+                      <td className="p-3">
+                        <input type="number" value={item.quantity} onChange={(e) => updateItem(idx, "quantity", parseFloat(e.target.value) || 0)} className="w-full px-4 py-2.5 bg-transparent border border-transparent rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none" />
+                      </td>
+                      <td className="p-3">
+                        <input type="number" value={item.unitPrice} onChange={(e) => updateItem(idx, "unitPrice", parseFloat(e.target.value) || 0)} className="w-full px-4 py-2.5 bg-transparent border border-transparent rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none" />
+                      </td>
+                      <td className="p-3 text-center">
+                        <button onClick={() => removeItem(idx)} className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">✕</button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
 
-            <button className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all border border-blue-100">
+            <button onClick={addItem} className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all border border-blue-100">
               <span className="text-lg leading-none">+</span> Add New Item
             </button>
           </div>
 
-          {/* Summary Totals Section */}
           <div className="bg-slate-50/80 border-t border-slate-100 p-8 md:p-10">
             <div className="max-w-sm ml-auto space-y-4">
               <div className="flex justify-between text-slate-600">
                 <span className="font-medium">Subtotal</span>
-                <span className="font-semibold text-slate-800">R 19,000.00</span>
+                <span className="font-semibold text-slate-800">R {subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-slate-600">
-                <span className="font-medium">Tax (15%)</span>
-                <span className="font-semibold text-slate-800">R 2,850.00</span>
+                <span className="font-medium">Tax ({invoice.taxRate}%)</span>
+                <span className="font-semibold text-slate-800">R {tax.toFixed(2)}</span>
               </div>
               <div className="pt-5 border-t border-slate-200 flex justify-between items-center">
                 <span className="text-xl font-extrabold text-slate-900">Total Amount</span>
-                <span className="text-xl font-extrabold text-blue-600">
-                  R 21,850.00
-                </span>
+                <span className="text-xl font-extrabold text-blue-600">R {total.toFixed(2)}</span>
               </div>
             </div>
           </div>
-          
         </div>
       </div>
     </div>

@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+import { useDocument } from '../../context/DocumentContext';
 
 export default function ContractPreview() {
   const navigate = useNavigate();
+  const { document } = useDocument();
+  const contract = document.contract;
 
   return (
     <div className="min-h-screen bg-slate-200/60 font-sans text-slate-800">
@@ -59,15 +62,15 @@ export default function ContractPreview() {
             </div>
 
             <h1 className="text-3xl sm:text-4xl font-serif font-bold text-center mb-12 uppercase tracking-[0.2em] border-b-2 border-slate-900 pb-8">
-              Service Agreement
+              {contract.documentTitle || "Service Agreement"}
             </h1>
 
             <div className="space-y-8 text-slate-800 font-serif leading-relaxed text-sm sm:text-base">
               
               <p>
-                This Agreement is made effective as of <span className="font-bold border-b border-slate-300 px-2">[Date]</span>, 
-                by and between <strong>[Client Name]</strong> (hereinafter referred to as the "Client") and 
-                <strong> [Contractor Name]</strong> (hereinafter referred to as the "Contractor").
+                This Agreement is made effective as of <span className="font-bold border-b border-slate-300 px-2">{contract.effectiveDate || "[Date]"}</span>, 
+                by and between <strong>{contract.clientName || "[Client Name]"}</strong> (hereinafter referred to as the "Client") and 
+                <strong>{contract.contractorName || "[Contractor Name]"}</strong> (hereinafter referred to as the "Contractor").
               </p>
 
               <div>
@@ -76,7 +79,7 @@ export default function ContractPreview() {
                   Scope of Services
                 </h2>
                 <div className="bg-slate-50 border-l-4 border-slate-200 p-6 italic text-slate-600 whitespace-pre-wrap">
-                  [The scope of work details will appear here dynamically from your editor...]
+                  {contract.scope || "[The scope of work details will appear here dynamically from your editor...]"}
                 </div>
               </div>
 
@@ -87,8 +90,8 @@ export default function ContractPreview() {
                 </h2>
                 <p>
                   The total consideration for the services described shall be a sum of 
-                  <span className="font-bold"> R [Value]</span>. The Client agrees to pay an upfront deposit of 
-                  <span className="font-bold"> [Deposit]%</span> upon execution of this Agreement.
+                  <span className="font-bold"> R {contract.totalValue?.toFixed(2) || "[Value]"}</span>. The Client agrees to pay an upfront deposit of 
+                  <span className="font-bold"> {contract.depositPercent || "[Deposit]"}%</span> upon execution of this Agreement.
                 </p>
               </div>
 
@@ -99,7 +102,7 @@ export default function ContractPreview() {
                 </h2>
                 <p>
                   This Agreement shall be governed by and construed in accordance with the laws of 
-                  <strong> [Governing Law]</strong>.
+                  <strong>{contract.governingLaw || "[Governing Law]"}</strong>.
                 </p>
               </div>
 

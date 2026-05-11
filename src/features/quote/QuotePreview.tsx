@@ -1,7 +1,14 @@
 import { useNavigate } from 'react-router-dom';
+import { useDocument } from '../../context/DocumentContext';
 
 export default function QuotePreview() {
   const navigate = useNavigate();
+  const { document } = useDocument();
+  const quote = document.quote;
+
+  const subtotal = quote.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+  const tax = subtotal * 0.15; // Assuming 15% tax rate, can be made configurable later
+  const total = subtotal + tax;
 
   return (
     <div className="min-h-screen bg-[#f1f5f9] font-sans text-slate-900">
@@ -21,7 +28,7 @@ export default function QuotePreview() {
               </button>
               <div className="hidden sm:block border-l border-slate-200 pl-4">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Document Review</p>
-                <h2 className="text-sm font-bold text-slate-700">Q-2025-0042 • Nexus Solutions</h2>
+                <h2 className="text-sm font-bold text-slate-700">{quote.quoteNumber || "Q-2025-XXXX"} • {quote.clientName || "Client Name"}</h2>
               </div>
             </div>
 
@@ -55,13 +62,13 @@ export default function QuotePreview() {
             <div className="p-8 sm:p-16">
               <div className="flex justify-between items-start mb-16">
                 <div>
-                  <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl mb-4">N</div>
-                  <h1 className="text-2xl font-black tracking-tight">Nexus Solutions Inc.</h1>
-                  <p className="text-slate-400 text-xs mt-1">123 Business Blvd, Austin, TX</p>
+                  <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl">{(quote.companyName || "C")[0].toUpperCase()}</div>
+                  <h1 className="text-2xl font-black tracking-tight">{quote.companyName || "Company Name"}</h1>
+                  <p className="text-slate-400 text-xs mt-1">{quote.companyAddress || "Company Address"}</p>
                 </div>
                 <div className="text-right">
                   <h2 className="text-4xl font-black text-slate-200 uppercase tracking-tighter">Quote</h2>
-                  <p className="text-blue-600 font-bold mt-2"># Q-2025-0042</p>
+                  <p className="text-blue-600 font-bold mt-2"># {quote.quoteNumber || "Q-2025-XXXX"}</p>
                 </div>
               </div>
 
@@ -69,14 +76,14 @@ export default function QuotePreview() {
               <div className="grid grid-cols-2 gap-12 mb-16 py-8 border-y border-slate-50">
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Prepared For</p>
-                  <p className="font-bold text-slate-900">BrightWave Marketing</p>
-                  <p className="text-slate-500 text-sm mt-1">contact@brightwave.com</p>
-                  <p className="text-slate-500 text-sm">450 Park Avenue, NY</p>
+                  <p className="font-bold text-slate-900">{quote.clientName || "Client Name"}</p>
+                  <p className="text-slate-500 text-sm mt-1">{quote.clientEmail || "client@example.com"}</p>
+                  <p className="text-slate-500 text-sm">{quote.clientAddress || "Client Address"}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Date Details</p>
-                  <p className="text-sm"><span className="text-slate-400">Issued:</span> <span className="font-bold">2025-04-15</span></p>
-                  <p className="text-sm mt-1"><span className="text-slate-400">Expires:</span> <span className="font-bold">2025-05-15</span></p>
+                  <p className="text-sm"><span className="text-slate-400">Issued:</span> <span className="font-bold">{quote.issueDate || "2025-01-01"}</span></p>
+                  <p className="text-sm mt-1"><span className="text-slate-400">Expires:</span> <span className="font-bold">{quote.expiryDate || "2025-02-01"}</span></p>
                 </div>
               </div>
 
@@ -92,18 +99,18 @@ export default function QuotePreview() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    <tr className="group">
-                      <td className="py-6 font-bold text-slate-800">Website UX Audit</td>
-                      <td className="py-6 text-center text-slate-600">1</td>
-                      <td className="py-6 text-right text-slate-600 font-mono">R 450.00</td>
-                      <td className="py-6 text-right font-bold text-slate-900 font-mono">R 450.00</td>
-                    </tr>
-                    <tr>
-                      <td className="py-6 font-bold text-slate-800">SEO optimization (monthly)</td>
-                      <td className="py-6 text-center text-slate-600">3</td>
-                      <td className="py-6 text-right text-slate-600 font-mono">R 290.00</td>
-                      <td className="py-6 text-right font-bold text-slate-900 font-mono">R 870.00</td>
-                    </tr>
+                    {quote.items.length > 0 ? quote.items.map((item, index) => (
+                      <tr key={index} className="group">
+                        <td className="py-6 font-bold text-slate-800">{item.description || "Item description"}</td>
+                        <td className="py-6 text-center text-slate-600">{item.quantity}</td>
+                        <td className="py-6 text-right text-slate-600 font-mono">R {item.unitPrice.toFixed(2)}</td>
+                        <td className="py-6 text-right font-bold text-slate-900 font-mono">R {(item.quantity * item.unitPrice).toFixed(2)}</td>
+                      </tr>
+                    )) : (
+                      <tr>
+                        <td colSpan={4} className="py-6 text-center text-slate-400">No items added yet</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -113,15 +120,15 @@ export default function QuotePreview() {
                 <div className="w-full sm:w-64 space-y-3">
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-400">Subtotal</span>
-                    <span className="font-bold">R 1,320.00</span>
+                    <span className="font-bold">R {subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Tax (8.5%)</span>
-                    <span className="font-bold">R 112.20</span>
+                    <span className="text-slate-400">Tax (15%)</span>
+                    <span className="font-bold">R {tax.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between items-center pt-4 border-t-2 border-slate-900">
                     <span className="text-xs font-black uppercase tracking-widest">Total Amount</span>
-                    <span className="text-xl font-black text-blue-600 font-mono">R 1,432.20</span>
+                    <span className="text-xl font-black text-blue-600 font-mono">R {total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -130,8 +137,7 @@ export default function QuotePreview() {
               <div className="mt-32 pt-10 border-t border-slate-100">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2">Terms & Conditions</p>
                 <p className="text-[10px] text-slate-400 leading-relaxed max-w-lg">
-                  All services subject to standard terms. Payment due within 15 days of acceptance.
-                  This quote is valid until expiration date. Thank you for your business.
+                  {quote.terms || "All services subject to standard terms. Payment due within 15 days of acceptance. This quote is valid until expiration date. Thank you for your business."}
                 </p>
               </div>
             </div>
@@ -160,11 +166,11 @@ export default function QuotePreview() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-slate-50 p-3 rounded-xl">
                   <p className="text-[10px] text-slate-400 font-bold uppercase">Items</p>
-                  <p className="text-xl font-black text-slate-900">02</p>
+                  <p className="text-xl font-black text-slate-900">{quote.items.length.toString().padStart(2, '0')}</p>
                 </div>
                 <div className="bg-slate-50 p-3 rounded-xl">
                   <p className="text-[10px] text-slate-400 font-bold uppercase">Tax</p>
-                  <p className="text-xl font-black text-slate-900">8.5%</p>
+                  <p className="text-xl font-black text-slate-900">15%</p>
                 </div>
               </div>
             </div>

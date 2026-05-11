@@ -1,7 +1,14 @@
 import { useNavigate } from 'react-router-dom';
+import { useDocument } from '../../context/DocumentContext';
 
 export default function ContractBuilder() {
   const navigate = useNavigate();
+  const { document, setDocument } = useDocument();
+  const contract = document.contract;
+
+  const updateField = (field: keyof typeof contract, value: any) => {
+    setDocument((prev) => ({ ...prev, contract: { ...prev.contract, [field]: value } }));
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col">
@@ -76,15 +83,15 @@ export default function ContractBuilder() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="md:col-span-2">
                     <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Document Title</label>
-                    <input type="text" defaultValue="Freelance Service Agreement" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-blue-500 outline-none transition-all" />
+                    <input type="text" value={contract.documentTitle} onChange={(e) => updateField('documentTitle', e.target.value)} placeholder="Freelance Service Agreement" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-blue-500 outline-none transition-all" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Effective Date</label>
-                    <input type="date" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
+                    <input type="date" value={contract.effectiveDate} onChange={(e) => updateField('effectiveDate', e.target.value)} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Governing Law</label>
-                    <input type="text" placeholder="e.g. South Africa" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
+                    <input type="text" value={contract.governingLaw} onChange={(e) => updateField('governingLaw', e.target.value)} placeholder="e.g. South Africa" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
                   </div>
                 </div>
               </div>
@@ -98,13 +105,13 @@ export default function ContractBuilder() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="p-5 bg-slate-50/50 rounded-2xl border border-slate-100 space-y-4">
                     <p className="text-[11px] font-black text-blue-600 uppercase tracking-widest">Client Details</p>
-                    <input type="text" placeholder="Client Name / Company" className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
-                    <input type="text" placeholder="Physical Address" className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="text" value={contract.clientName} onChange={(e) => updateField('clientName', e.target.value)} placeholder="Client Name / Company" className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="text" value={contract.clientAddress} onChange={(e) => updateField('clientAddress', e.target.value)} placeholder="Physical Address" className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
                   </div>
                   <div className="p-5 bg-slate-50/50 rounded-2xl border border-slate-100 space-y-4">
                     <p className="text-[11px] font-black text-blue-600 uppercase tracking-widest">Contractor Details</p>
-                    <input type="text" placeholder="Your Name / Company" className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
-                    <input type="text" placeholder="Physical Address" className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="text" value={contract.contractorName} onChange={(e) => updateField('contractorName', e.target.value)} placeholder="Your Name / Company" className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="text" value={contract.contractorAddress} onChange={(e) => updateField('contractorAddress', e.target.value)} placeholder="Physical Address" className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
                   </div>
                 </div>
               </div>
@@ -120,12 +127,12 @@ export default function ContractBuilder() {
                     <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Total Contract Value</label>
                     <div className="relative">
                       <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 font-black">R</span>
-                      <input type="number" placeholder="0.00" className="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
+                      <input type="number" value={contract.totalValue} onChange={(e) => updateField('totalValue', parseFloat(e.target.value) || 0)} placeholder="0.00" className="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Upfront Deposit (%)</label>
-                    <input type="number" placeholder="e.g. 50" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
+                    <input type="number" value={contract.depositPercent} onChange={(e) => updateField('depositPercent', parseFloat(e.target.value) || 0)} placeholder="e.g. 50" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
                   </div>
                 </div>
               </div>
@@ -136,7 +143,7 @@ export default function ContractBuilder() {
                   <span className="bg-blue-50 text-blue-600 text-xs font-black px-2 py-1 rounded">04</span>
                   <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Scope & Deliverables</h3>
                 </div>
-                <textarea rows="6" placeholder="Describe the project milestones and final deliverables..." className="w-full px-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all resize-y min-h-[160px]"></textarea>
+                <textarea rows={6} value={contract.scope} onChange={(e) => updateField('scope', e.target.value)} placeholder="Describe the project milestones and final deliverables..." className="w-full px-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all resize-y min-h-[160px]"></textarea>
               </div>
 
               {/* BOTTOM NAVIGATION ACTION */}
