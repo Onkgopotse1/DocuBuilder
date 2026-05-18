@@ -22,3 +22,53 @@ textarea,
 select {
   font: inherit;
 }
+
+
+
+/* Print styles – produces real vector PDF via Print → Save as PDF */
+@media print {
+  /* Hide all elements by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only the preview section (any element whose id ends with "-section") */
+  body [id$="-section"],
+  body [id$="-section"] * {
+    visibility: visible;
+  }
+
+  /* Position the preview section to fill the page */
+  body [id$="-section"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 1.5rem;
+    box-sizing: border-box;
+  }
+
+  /* Hide all navigation bars, sticky headers, buttons, and other UI chrome */
+  nav,
+  .fixed,
+  .sticky,
+  button,
+  .no-print,
+  [class*="fixed"],
+  [class*="sticky"] {
+    display: none !important;
+  }
+
+  /* Ensure background colours and shadows print correctly */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* A4 page margins */
+  @page {
+    size: A4;
+    margin: 1.5cm;
+  }
+}

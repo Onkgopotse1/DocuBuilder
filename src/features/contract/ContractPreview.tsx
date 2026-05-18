@@ -45,19 +45,19 @@ export default function ContractPreview() {
       <main className="max-w-5xl mx-auto py-8 sm:py-12 px-0 sm:px-6 flex justify-center">
         
         {/* A4 Paper Container */}
-        <section className="bg-white w-full max-w-[210mm] min-h-[297mm] shadow-[0_20px_50px_rgba(0,0,0,0.1)] sm:rounded-sm overflow-hidden flex flex-col">
+        <section id="contract-section" className="bg-[#ffffff] w-full max-w-[210mm] min-h-[297mm] shadow-[0_20px_50px_rgba(0,0,0,0.1)] sm:rounded-sm overflow-hidden flex flex-col" style={{ backgroundColor: '#ffffff', color: '#0f172a' }}>
           
           {/* Document Content */}
           <div className="p-10 sm:p-20 flex-1 relative">
             
             {/* Header / Letterhead Decor */}
             <div className="flex justify-between items-start mb-16">
-              <div className="w-12 h-12 bg-slate-900 rounded-sm flex items-center justify-center text-white font-black text-xl">
+              <div className="w-12 h-12 bg-[#0f172a] rounded-sm flex items-center justify-center text-[#ffffff] font-black text-xl">
                 C
               </div>
               <div className="text-right">
-                <h2 className="text-xs font-black uppercase tracking-widest text-slate-400">Legal Document</h2>
-                <p className="text-xs text-slate-400">Ref: CB-2026-001</p>
+                <h2 className="text-xs font-black uppercase tracking-widest text-[#94a3b8]">Legal Document</h2>
+                <p className="text-xs text-[#94a3b8]">Ref: CB-2026-001</p>
               </div>
             </div>
 
@@ -75,17 +75,17 @@ export default function ContractPreview() {
 
               <div>
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <span className="text-xs bg-slate-900 text-white w-5 h-5 flex items-center justify-center rounded-full">1</span>
+                  <span className="text-xs bg-[#0f172a] text-[#ffffff] w-5 h-5 flex items-center justify-center rounded-full">1</span>
                   Scope of Services
                 </h2>
-                <div className="bg-slate-50 border-l-4 border-slate-200 p-6 italic text-slate-600 whitespace-pre-wrap">
+                <div className="bg-[#f8fafc] border-l-4 border-[#e2e8f0] p-6 italic text-[#475569] whitespace-pre-wrap">
                   {contract.scope || "[The scope of work details will appear here dynamically from your editor...]"}
                 </div>
               </div>
 
               <div>
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <span className="text-xs bg-slate-900 text-white w-5 h-5 flex items-center justify-center rounded-full">2</span>
+                  <span className="text-xs bg-[#0f172a] text-[#ffffff] w-5 h-5 flex items-center justify-center rounded-full">2</span>
                   Payment Terms
                 </h2>
                 <p>
@@ -97,7 +97,7 @@ export default function ContractPreview() {
 
               <div>
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <span className="text-xs bg-slate-900 text-white w-5 h-5 flex items-center justify-center rounded-full">3</span>
+                  <span className="text-xs bg-[#0f172a] text-[#ffffff] w-5 h-5 flex items-center justify-center rounded-full">3</span>
                   Governing Law
                 </h2>
                 <p>
@@ -109,14 +109,14 @@ export default function ContractPreview() {
               {/* Signature Area */}
               <div className="mt-24 grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-24">
                 <div>
-                  <div className="border-b-2 border-slate-900 h-12 mb-3"></div>
+                  <div className="border-b-2 border-[#0f172a] h-12 mb-3"></div>
                   <p className="font-bold text-xs uppercase tracking-widest">Client Signature</p>
-                  <p className="text-[10px] text-slate-400 mt-1">Authorized Representative</p>
+                  <p className="text-[10px] text-[#94a3b8] mt-1">Authorized Representative</p>
                 </div>
                 <div>
-                  <div className="border-b-2 border-slate-900 h-12 mb-3"></div>
+                  <div className="border-b-2 border-[#0f172a] h-12 mb-3"></div>
                   <p className="font-bold text-xs uppercase tracking-widest">Contractor Signature</p>
-                  <p className="text-[10px] text-slate-400 mt-1">Service Provider</p>
+                  <p className="text-[10px] text-[#94a3b8] mt-1">Service Provider</p>
                 </div>
               </div>
 

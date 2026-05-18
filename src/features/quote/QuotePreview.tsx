@@ -56,29 +56,29 @@ export default function QuotePreview() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* LEFT: The actual document */}
-          <div className="lg:col-span-8 bg-white shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-200 overflow-hidden min-h-[297mm] flex flex-col">
+          <div id="quote-section" className="lg:col-span-8 bg-[#ffffff] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-[#e2e8f0] overflow-hidden min-h-[297mm] flex flex-col" style={{ backgroundColor: '#ffffff', color: '#0f172a' }}>
             
             {/* Quote Header */}
             <div className="p-8 sm:p-16">
               <div className="flex justify-between items-start mb-16">
                 <div>
-                  <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl">{(quote.companyName || "C")[0].toUpperCase()}</div>
+                  <div className="w-12 h-12 bg-[#2563eb] rounded-xl flex items-center justify-center text-[#ffffff] font-black text-xl">{(quote.companyName || "C")[0].toUpperCase()}</div>
                   <h1 className="text-2xl font-black tracking-tight">{quote.companyName || "Company Name"}</h1>
-                  <p className="text-slate-400 text-xs mt-1">{quote.companyAddress || "Company Address"}</p>
+                  <p className="text-[#94a3b8] text-xs mt-1">{quote.companyAddress || "Company Address"}</p>
                 </div>
                 <div className="text-right">
-                  <h2 className="text-4xl font-black text-slate-200 uppercase tracking-tighter">Quote</h2>
-                  <p className="text-blue-600 font-bold mt-2"># {quote.quoteNumber || "Q-2025-XXXX"}</p>
+                  <h2 className="text-4xl font-black text-[#cbd5e1] uppercase tracking-tighter">Quote</h2>
+                  <p className="text-[#2563eb] font-bold mt-2"># {quote.quoteNumber || "Q-2025-XXXX"}</p>
                 </div>
               </div>
 
               {/* Grid Info */}
-              <div className="grid grid-cols-2 gap-12 mb-16 py-8 border-y border-slate-50">
+              <div className="grid grid-cols-2 gap-12 mb-16 py-8 border-y border-[#f8fafc]">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Prepared For</p>
-                  <p className="font-bold text-slate-900">{quote.clientName || "Client Name"}</p>
-                  <p className="text-slate-500 text-sm mt-1">{quote.clientEmail || "client@example.com"}</p>
-                  <p className="text-slate-500 text-sm">{quote.clientAddress || "Client Address"}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8] mb-2">Prepared For</p>
+                  <p className="font-bold text-[#0f172a]">{quote.clientName || "Client Name"}</p>
+                  <p className="text-[#64748b] text-sm mt-1">{quote.clientEmail || "client@example.com"}</p>
+                  <p className="text-[#64748b] text-sm">{quote.clientAddress || "Client Address"}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Date Details</p>
@@ -91,20 +91,20 @@ export default function QuotePreview() {
               <div className="mb-12">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b-2 border-slate-900">
-                      <th className="py-4 text-left text-[10px] font-black uppercase tracking-widest text-slate-400">Description</th>
-                      <th className="py-4 text-center text-[10px] font-black uppercase tracking-widest text-slate-400">Qty</th>
-                      <th className="py-4 text-right text-[10px] font-black uppercase tracking-widest text-slate-400">Unit Price</th>
-                      <th className="py-4 text-right text-[10px] font-black uppercase tracking-widest text-slate-400">Total</th>
+                    <tr className="border-b-2 border-[#0f172a]">
+                      <th className="py-4 text-left text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Description</th>
+                      <th className="py-4 text-center text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Qty</th>
+                      <th className="py-4 text-right text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Unit Price</th>
+                      <th className="py-4 text-right text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Total</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {quote.items.length > 0 ? quote.items.map((item, index) => (
                       <tr key={index} className="group">
-                        <td className="py-6 font-bold text-slate-800">{item.description || "Item description"}</td>
-                        <td className="py-6 text-center text-slate-600">{item.quantity}</td>
-                        <td className="py-6 text-right text-slate-600 font-mono">R {item.unitPrice.toFixed(2)}</td>
-                        <td className="py-6 text-right font-bold text-slate-900 font-mono">R {(item.quantity * item.unitPrice).toFixed(2)}</td>
+                        <td className="py-6 font-bold text-[#0f172a]">{item.description || "Item description"}</td>
+                        <td className="py-6 text-center text-[#475569]">{item.quantity}</td>
+                        <td className="py-6 text-right text-[#475569] font-mono">R {item.unitPrice.toFixed(2)}</td>
+                        <td className="py-6 text-right font-bold text-[#0f172a] font-mono">R {(item.quantity * item.unitPrice).toFixed(2)}</td>
                       </tr>
                     )) : (
                       <tr>
@@ -119,24 +119,24 @@ export default function QuotePreview() {
               <div className="flex justify-end pt-8">
                 <div className="w-full sm:w-64 space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Subtotal</span>
+                    <span className="text-[#94a3b8]">Subtotal</span>
                     <span className="font-bold">R {subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Tax (15%)</span>
+                    <span className="text-[#94a3b8]">Tax (15%)</span>
                     <span className="font-bold">R {tax.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between items-center pt-4 border-t-2 border-slate-900">
+                  <div className="flex justify-between items-center pt-4 border-t-2 border-[#0f172a]">
                     <span className="text-xs font-black uppercase tracking-widest">Total Amount</span>
-                    <span className="text-xl font-black text-blue-600 font-mono">R {total.toFixed(2)}</span>
+                    <span className="text-xl font-black text-[#2563eb] font-mono">R {total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
 
               {/* Footer */}
-              <div className="mt-32 pt-10 border-t border-slate-100">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2">Terms & Conditions</p>
-                <p className="text-[10px] text-slate-400 leading-relaxed max-w-lg">
+              <div className="mt-32 pt-10 border-t border-[#f1f5f9]">
+                <p className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-[0.2em] mb-2">Terms & Conditions</p>
+                <p className="text-[10px] text-[#94a3b8] leading-relaxed max-w-lg">
                   {quote.terms || "All services subject to standard terms. Payment due within 15 days of acceptance. This quote is valid until expiration date. Thank you for your business."}
                 </p>
               </div>

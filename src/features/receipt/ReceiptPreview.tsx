@@ -40,40 +40,40 @@ export default function ReceiptPreview() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* LEFT: The Document */}
-          <div className="lg:col-span-8 bg-white shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-200 overflow-hidden min-h-[297mm] flex flex-col relative">
+          <div id="receipt-section" className="lg:col-span-8 bg-[#ffffff] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-[#e2e8f0] overflow-hidden min-h-[297mm] flex flex-col relative" style={{ backgroundColor: '#ffffff', color: '#0f172a' }}>
             
             {/* The Document Content */}
             <div className="p-8 sm:p-16">
               
               <div className="flex justify-between items-start mb-16">
                 <div>
-                  <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-white font-black text-xl mb-4">N</div>
+                  <div className="w-12 h-12 bg-[#0f172a] rounded-xl flex items-center justify-center text-[#ffffff] font-black text-xl mb-4">N</div>
                   <h1 className="text-2xl font-black tracking-tight">Nexus Solutions Inc.</h1>
-                  <p className="text-slate-400 text-xs mt-1">123 Business Blvd, Austin, TX</p>
-                  <p className="text-slate-400 text-xs">hello@nexus-solutions.com</p>
+                  <p className="text-[#94a3b8] text-xs mt-1">123 Business Blvd, Austin, TX</p>
+                  <p className="text-[#94a3b8] text-xs">hello@nexus-solutions.com</p>
                 </div>
                 <div className="text-right flex flex-col items-end">
-                  <h2 className="text-4xl font-black text-slate-200 uppercase tracking-tighter">Receipt</h2>
-                  <p className="text-slate-500 font-bold mt-2"># RCT-1002</p>
+                  <h2 className="text-4xl font-black text-[#cbd5e1] uppercase tracking-tighter">Receipt</h2>
+                  <p className="text-[#64748b] font-bold mt-2"># RCT-1002</p>
                   
                   {/* PAID BADGE */}
-                  <div className="mt-4 bg-emerald-50 border-2 border-emerald-500 text-emerald-600 px-4 py-1.5 rounded-md transform rotate-[-2deg]">
+                  <div className="mt-4 bg-[#ecfdf5] border-2 border-[#047857] text-[#047857] px-4 py-1.5 rounded-md transform rotate-[-2deg]">
                     <p className="font-black tracking-widest text-lg uppercase">Paid in Full</p>
                   </div>
                 </div>
               </div>
 
               {/* Grid Info */}
-              <div className="grid grid-cols-2 gap-12 mb-16 py-8 border-y border-slate-50">
+              <div className="grid grid-cols-2 gap-12 mb-16 py-8 border-y border-[#f8fafc]">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Received From</p>
-                  <p className="font-bold text-slate-900">BrightWave Marketing</p>
-                  <p className="text-slate-500 text-sm mt-1">contact@brightwave.com</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8] mb-2">Received From</p>
+                  <p className="font-bold text-[#0f172a]">BrightWave Marketing</p>
+                  <p className="text-[#64748b] text-sm mt-1">contact@brightwave.com</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Payment Details</p>
-                  <p className="text-sm"><span className="text-slate-400">Date Paid:</span> <span className="font-bold">2026-04-20</span></p>
-                  <p className="text-sm mt-1"><span className="text-slate-400">Method:</span> <span className="font-bold">EFT / Bank Transfer</span></p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8] mb-2">Payment Details</p>
+                  <p className="text-sm"><span className="text-[#94a3b8]">Date Paid:</span> <span className="font-bold">2026-04-20</span></p>
+                  <p className="text-sm mt-1"><span className="text-[#94a3b8]">Method:</span> <span className="font-bold">EFT / Bank Transfer</span></p>
                 </div>
               </div>
 
@@ -82,16 +82,16 @@ export default function ReceiptPreview() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b-2 border-slate-900">
-                      <th className="py-4 text-left text-[10px] font-black uppercase tracking-widest text-slate-400">Description</th>
-                      <th className="py-4 text-center text-[10px] font-black uppercase tracking-widest text-slate-400">Qty</th>
-                      <th className="py-4 text-right text-[10px] font-black uppercase tracking-widest text-slate-400">Amount</th>
+                      <th className="py-4 text-left text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Description</th>
+                      <th className="py-4 text-center text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Qty</th>
+                      <th className="py-4 text-right text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Amount</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-[#f1f5f9]">
                     <tr className="group">
-                      <td className="py-6 font-bold text-slate-800">Invoice INV-2026-089 Final Payment</td>
-                      <td className="py-6 text-center text-slate-600">1</td>
-                      <td className="py-6 text-right text-slate-900 font-bold font-mono">R 15,000.00</td>
+                      <td className="py-6 font-bold text-[#0f172a]">Invoice INV-2026-089 Final Payment</td>
+                      <td className="py-6 text-center text-[#475569]">1</td>
+                      <td className="py-6 text-right text-[#0f172a] font-bold font-mono">R 15,000.00</td>
                     </tr>
                   </tbody>
                 </table>
@@ -101,27 +101,27 @@ export default function ReceiptPreview() {
               <div className="flex justify-end pt-8">
                 <div className="w-full sm:w-64 space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Subtotal</span>
+                    <span className="text-[#94a3b8]">Subtotal</span>
                     <span className="font-bold">R 15,000.00</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Tax (15%)</span>
+                    <span className="text-[#94a3b8]">Tax (15%)</span>
                     <span className="font-bold">R 2,250.00</span>
                   </div>
-                  <div className="flex justify-between items-center pt-4 border-t-2 border-slate-900">
-                    <span className="text-xs font-black uppercase tracking-widest text-emerald-600">Total Paid</span>
-                    <span className="text-xl font-black text-emerald-600 font-mono">R 17,250.00</span>
+                  <div className="flex justify-between items-center pt-4 border-t-2 border-[#0f172a]">
+                    <span className="text-xs font-black uppercase tracking-widest text-[#047857]">Total Paid</span>
+                    <span className="text-xl font-black text-[#047857] font-mono">R 17,250.00</span>
                   </div>
                 </div>
               </div>
 
               {/* Footer */}
-              <div className="mt-32 pt-10 border-t border-slate-100 flex flex-col items-center text-center">
+              <div className="mt-32 pt-10 border-t border-[#f1f5f9] flex flex-col items-center text-center">
                 <svg className="w-8 h-8 text-emerald-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <p className="text-sm font-bold text-slate-700">Thank you for your payment!</p>
-                <p className="text-[10px] text-slate-400 mt-2">This is a valid receipt of payment.</p>
+                <p className="text-sm font-bold text-[#0f172a]">Thank you for your payment!</p>
+                <p className="text-[10px] text-[#94a3b8] mt-2">This is a valid receipt of payment.</p>
               </div>
             </div>
           </div>
