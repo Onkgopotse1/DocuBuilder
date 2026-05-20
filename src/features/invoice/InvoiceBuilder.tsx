@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import  { useDocument } from "../../context/DocumentContext";
 import type { InvoiceItem } from "../../context/DocumentContext";
 
+
 export default function InvoiceBuilder() {
   const navigate = useNavigate();
   const { document, setDocument } = useDocument();
@@ -47,7 +48,7 @@ export default function InvoiceBuilder() {
             <span>👁️</span>
             <span className="hidden md:inline ml-2">Preview</span>
           </button>
-          <button className="flex items-center justify-center px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-md shadow-blue-600/20 gap-2">
+          <button onClick={() => navigate("/invoice-preview?download=1")} className="flex items-center justify-center px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-md shadow-blue-600/20 gap-2">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
             <span>Download</span>
           </button>
@@ -55,9 +56,9 @@ export default function InvoiceBuilder() {
       </nav>
 
       <div className="max-w-5xl mx-auto pt-32 px-4 md:px-6">
-        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/40 border border-slate-100 overflow-hidden">
+        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/40 border-2 border-slate-300 overflow-hidden">
           <div className="p-8 md:p-10 space-y-8">
-            <div className="flex items-center gap-4 border-b border-slate-100 pb-6">
+            <div className="flex items-center gap-4 border-b-2 border-slate-300 pb-6">
               <div className="p-3 bg-blue-50 rounded-xl text-blue-600">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
               </div>
@@ -66,35 +67,35 @@ export default function InvoiceBuilder() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Client / Company</label>
-                <input type="text" value={invoice.clientName} onChange={(e) => updateField("clientName", e.target.value)} placeholder="e.g. Acme Corp" className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50" />
+                <input type="text" value={invoice.clientName} onChange={(e) => updateField("clientName", e.target.value)} placeholder="e.g. Acme Corp" className="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Client Email</label>
-                <input type="email" value={invoice.clientEmail} onChange={(e) => updateField("clientEmail", e.target.value)} placeholder="client@example.com" className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50" />
+                <input type="email" value={invoice.clientEmail} onChange={(e) => updateField("clientEmail", e.target.value)} placeholder="client@example.com" className="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50" />
               </div>
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Billing Address</label>
-              <textarea rows={2} value={invoice.clientAddress} onChange={(e) => updateField("clientAddress", e.target.value)} placeholder="Street address, City, Country" className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50 resize-none" />
+                <textarea rows={2} value={invoice.clientAddress} onChange={(e) => updateField("clientAddress", e.target.value)} placeholder="Street address, City, Country" className="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none bg-slate-50/50 hover:bg-slate-50 resize-none" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Invoice Number</label>
-                <input type="text" value={invoice.invoiceNumber} onChange={(e) => updateField("invoiceNumber", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" />
+                <input type="text" value={invoice.invoiceNumber} onChange={(e) => updateField("invoiceNumber", e.target.value)} className="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Invoice Date</label>
-                <input type="date" value={invoice.invoiceDate} onChange={(e) => updateField("invoiceDate", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" />
+                <input type="date" value={invoice.invoiceDate} onChange={(e) => updateField("invoiceDate", e.target.value)} className="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Tax Rate (%)</label>
-                <input type="number" value={invoice.taxRate} onChange={(e) => updateField("taxRate", parseFloat(e.target.value) || 0)} className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" />
+                <input type="number" value={invoice.taxRate} onChange={(e) => updateField("taxRate", parseFloat(e.target.value) || 0)} className="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" />
               </div>
             </div>
           </div>
 
           <div className="px-8 md:px-10 pb-10 space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-6">
+            <div className="flex items-center justify-between border-b-2 border-slate-300 pb-6">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-emerald-50 rounded-xl text-emerald-600">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
@@ -103,17 +104,17 @@ export default function InvoiceBuilder() {
               </div>
             </div>
 
-            <div className="overflow-x-auto rounded-xl border border-slate-100">
+            <div className="overflow-x-auto rounded-xl border-2 border-slate-300">
               <table className="w-full border-collapse">
-                <thead className="bg-slate-50/80">
-                  <tr className="text-left text-xs font-bold uppercase tracking-widest text-slate-500">
+                <thead className="bg-slate-50/90">
+                  <tr className="text-left text-xs font-bold uppercase tracking-widest text-slate-600">
                     <th className="px-5 py-4">Description</th>
                     <th className="px-5 py-4 w-32">Qty</th>
                     <th className="px-5 py-4 w-48">Unit Price</th>
                     <th className="px-5 py-4 w-16 text-center"></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-200">
                   {invoice.items.map((item, idx) => (
                     <tr key={idx} className="group hover:bg-slate-50/50 transition-colors">
                       <td className="p-3">
@@ -139,7 +140,7 @@ export default function InvoiceBuilder() {
             </button>
           </div>
 
-          <div className="bg-slate-50/80 border-t border-slate-100 p-8 md:p-10">
+          <div className="bg-slate-50/80 border-t-2 border-slate-300 p-8 md:p-10">
             <div className="max-w-sm ml-auto space-y-4">
               <div className="flex justify-between text-slate-600">
                 <span className="font-medium">Subtotal</span>
