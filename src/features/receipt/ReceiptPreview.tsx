@@ -44,6 +44,13 @@ export default function ReceiptPreview() {
             
             {/* The Document Content */}
             <div className="p-8 sm:p-16">
+              <style>{`#receipt-section, #receipt-section * { color: #0f172a !important; border-color: #cbd5e1 !important; background-color: transparent !important; fill: #0f172a !important; }
+  #receipt-section { background-color: #ffffff !important; }
+  #receipt-section .bg-emerald-600 { background-color: #10b981 !important; color: #ffffff !important; }
+  #receipt-section .bg-slate-900 { background-color: #0f172a !important; color: #ffffff !important; }
+  #receipt-section .text-slate-400 { color: #94a3b8 !important; }
+  #receipt-section .text-slate-700 { color: #334155 !important; }
+  #receipt-section .bg-blue-600 { background-color: #2563eb !important; color:#ffffff !important; }`}</style>
               
               <div className="flex justify-between items-start mb-16">
                 <div>

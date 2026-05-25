@@ -6,14 +6,16 @@ import { exportPDF } from "../../utils/PDF.Generator";
 export default function QuotePreview() {
   const navigate = useNavigate();
 
+  //-----this code calculates the subtotal, tax, and total amounts for the quote based on the items provided in the document context-----------------
   const { document } = useDocument();
   const quote = document.quote;
 
   const subtotal = quote.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
   const tax = subtotal * 0.15; // Assuming 15% tax rate, can be made configurable later
   const total = subtotal + tax;
+  //---------------------
 
-
+//-----this function is responsible for exporting the quote as a PDF when the download button is clicked-----------------
    const handleExport = async () => {
      setExportError(null);
      try {
@@ -23,8 +25,9 @@ export default function QuotePreview() {
        setExportError(`PDF export failed: ${message}`);
      }
    };
+//---------------------
 
-
+//-----this code is  responsible for making the download button in QuoteBuilder work-----------------
   const [searchParams, setSearchParams] = useSearchParams();       // ← read URL params
   const [exportError, setExportError] = useState<string | null>(null);
   const [isAutoExporting, setIsAutoExporting] = useState(false);   // ← prevent double call
@@ -41,7 +44,7 @@ export default function QuotePreview() {
       });
     }
   }, [searchParams]);
-
+//-------------------------------
 
   return (
     <div className="min-h-screen bg-[#f1f5f9] font-sans" style={{ color: '#0f172a', backgroundColor: '#f1f5f9' }}>

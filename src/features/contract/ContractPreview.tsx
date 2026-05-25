@@ -31,7 +31,8 @@ export default function ContractPreview() {
                 Print
              </button>
 
-             <button className="flex items-center gap-2 bg-[#1e3c72] text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-all shadow-lg active:scale-95">
+             <button className="flex items-center gap-2 bg-[#1e3c72] text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-all shadow-lg active:scale-95"
+                onClick={exportPDF()}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
@@ -46,6 +47,12 @@ export default function ContractPreview() {
         
         {/* A4 Paper Container */}
         <section id="contract-section" className="bg-[#ffffff] w-full max-w-[210mm] min-h-[297mm] shadow-[0_20px_50px_rgba(0,0,0,0.1)] sm:rounded-sm overflow-hidden flex flex-col" style={{ backgroundColor: '#ffffff', color: '#0f172a' }}>
+          <style>{`#contract-section, #contract-section * { color: #0f172a !important; border-color: #e2e8f0 !important; background-color: transparent !important; fill: #0f172a !important; }
+      #contract-section { background-color: #ffffff !important; }
+      #contract-section .bg-[#0f172a] { background-color: #0f172a !important; color: #ffffff !important; }
+      #contract-section .text-slate-800 { color: #0f172a !important; }
+      #contract-section .bg-[#f8fafc] { background-color: #f8fafc !important; }
+      #contract-section .border-slate-900 { border-color: #0f172a !important; }`}</style>
           
           {/* Document Content */}
           <div className="p-10 sm:p-20 flex-1 relative">

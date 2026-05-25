@@ -45,6 +45,11 @@ export default function PurchaseOrderPreview() {
 
       <div className="max-w-2xl mx-auto pt-24 px-4">
         <div id="purchaseorder-section" className="bg-[#ffffff] rounded-3xl overflow-hidden shadow-[0_20px_60px_-12px_rgba(37,99,235,0.15)] border-2 border-[#dbeafe]" style={{ backgroundColor: '#ffffff', color: '#0f172a' }}>
+          <style>{`#purchaseorder-section, #purchaseorder-section * { color: #0f172a !important; border-color: #dbeafe !important; background-color: transparent !important; fill: #0f172a !important; }
+      #purchaseorder-section { background-color: #ffffff !important; }
+      #purchaseorder-section .bg-blue-600 { background-color: #2563eb !important; color: #ffffff !important; }
+      #purchaseorder-section .text-[#2563eb] { color: #2563eb !important; }
+      #purchaseorder-section .bg-[#2563eb] { background-color: #2563eb !important; color: #ffffff !important; }`}</style>
 
           {/* Header */}
           <div className="flex">

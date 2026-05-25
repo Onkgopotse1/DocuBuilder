@@ -38,6 +38,11 @@ export default function ReportPreview() {
 
         {/* Document */}
         <div id="report-section" className="bg-[#ffffff] rounded-3xl shadow-[0_20px_60px_-12px_rgba(0,0,0,0.12)] overflow-hidden border border-[#f1f5f9]" style={{ backgroundColor: '#ffffff', color: '#1e293b' }}>
+          <style>{`#report-section, #report-section * { color: #1e293b !important; border-color: #cbd5e1 !important; background-color: transparent !important; fill: #1e293b !important; }
+      #report-section { background-color: #ffffff !important; }
+      #report-section .bg-violet-600 { background-color: #7c3aed !important; color: #ffffff !important; }
+      #report-section .text-slate-800 { color: #1e293b !important; }
+      #report-section .text-[#c4b5fd] { color: #c4b5fd !important; }`}</style>
 
           {/* Header stripe */}
           <div style={{ background: 'linear-gradient(90deg, #7c3aed 0%, #8b5cf6 100%)' }} className="px-8 py-7">

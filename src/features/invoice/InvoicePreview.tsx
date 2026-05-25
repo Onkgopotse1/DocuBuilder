@@ -5,27 +5,35 @@ import { exportPDF } from "../../utils/PDF.Generator";
 
 export default function InvoicePreview() {
 const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();       // ← read URL params
-  const [exportError, setExportError] = useState<string | null>(null);
-  const [isAutoExporting, setIsAutoExporting] = useState(false);   // ← prevent double call
+
+//-----this code calculates the subtotal, tax, and total amounts for the invoice based on the items and tax rate provided in the document context-----------------
   const { document } = useDocument();
   const invoice = document.invoice;
 
   const subtotal = invoice.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
   const tax = subtotal * (invoice.taxRate / 100);
   const total = subtotal + tax;
+//---------------------
 
+//-----this function is responsible for exporting the invoice as a PDF when the download button is clicked-----------------
   const handleExport = async () => {
     setExportError(null);
     try {
-      await exportPDF("invoice-section", "invoice");
+      await exportPDF("invoice-section", "invoice"); // "invoice" is the name of the file that will be downloaded
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       setExportError(`PDF export failed: ${message}`);
     }
   };
+//---------------------
 
-  // Auto-download when ?download=1 is present (once)
+//-----this code is  responsible for making the download button in InvoiceBuilder work-----------------
+
+  const [searchParams, setSearchParams] = useSearchParams();       // ← read URL params
+  const [exportError, setExportError] = useState<string | null>(null);
+  const [isAutoExporting, setIsAutoExporting] = useState(false);   // ← prevent double call
+
+    // Auto-download when ?download=1 is present (once)
   useEffect(() => {
     const shouldAutoDownload = searchParams.get("download") === "1";
     if (shouldAutoDownload && !isAutoExporting) {
@@ -37,6 +45,8 @@ const navigate = useNavigate();
       });
     }
   }, [searchParams]);
+  //-------------------------------
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 font-['Inter',system-ui,-apple-system,sans-serif] py-8 px-4 sm:px-6 text-slate-800">

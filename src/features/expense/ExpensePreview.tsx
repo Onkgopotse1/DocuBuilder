@@ -52,6 +52,13 @@ export default function ExpensePreview() {
 
         {/* Document card — white on dark */}
         <div id="expense-section" className="bg-[#ffffff] rounded-3xl overflow-hidden shadow-[0_32px_80px_-12px_rgba(0,0,0,0.6)]" style={{ backgroundColor: '#ffffff', color: '#0f172a' }}>
+          <style>{`#expense-section, #expense-section * { color: #0f172a !important; border-color: #cbd5e1 !important; background-color: transparent !important; fill: #0f172a !important; }
+      #expense-section { background-color: #ffffff !important; }
+      #expense-section .bg-sky-400 { background-color: #38bdf8 !important; }
+      #expense-section .bg-amber-400 { background-color: #f59e0b !important; }
+      #expense-section .bg-emerald-400 { background-color: #34d399 !important; }
+      #expense-section .bg-violet-400 { background-color: #a78bfa !important; }
+      #expense-section .bg-slate-400 { background-color: #94a3b8 !important; }`}</style>
 
           {/* Left accent bar + header */}
           <div className="flex">

@@ -39,6 +39,12 @@ export default function CreditNotePreview() {
 
       <div className="max-w-2xl mx-auto pt-28 px-6">
         <div id="creditnote-section" className="border-2 border-[#f1f5f9] rounded-3xl overflow-hidden shadow-xl bg-[#ffffff]" style={{ backgroundColor: '#ffffff', color: '#0f172a' }}>
+          <style>{`#creditnote-section, #creditnote-section * { color: #0f172a !important; border-color: #f1f5f9 !important; background-color: transparent !important; fill: #0f172a !important; }
+      #creditnote-section { background-color: #ffffff !important; }
+      #creditnote-section .bg-rose-50 { background-color: #fff1f2 !important; }
+      #creditnote-section .text-rose-500 { color: #ef4444 !important; }
+      #creditnote-section .bg-[#ffe4e6] { background-color: #ffe4e6 !important; }
+      #creditnote-section .text-[#dc2626] { color: #dc2626 !important; }`}</style>
 
           {/* Document header */}
           <div className="p-8 border-b-2 border-[#f1f5f9]">

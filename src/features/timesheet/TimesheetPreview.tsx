@@ -49,6 +49,12 @@ export default function TimesheetPreview() {
 
       <div className="max-w-4xl mx-auto pt-24 px-4">
         <div id="timesheet-section" className="bg-[#ffffff] rounded-3xl shadow-[0_20px_60px_-12px_rgba(0,0,0,0.1)] border border-[#f0abfc] overflow-hidden" style={{ backgroundColor: '#ffffff', color: '#0f172a' }}>
+          <style>{`#timesheet-section, #timesheet-section * { color: #0f172a !important; border-color: #cbd5e1 !important; background-color: transparent !important; fill: #0f172a !important; }
+      #timesheet-section { background-color: #ffffff !important; }
+      #timesheet-section .bg-amber-100 { background-color: #fef3c7 !important; }
+      #timesheet-section .bg-amber-500 { background-color: #f59e0b !important; color: #ffffff !important; }
+      #timesheet-section .text-amber-600 { color: #d97706 !important; }
+      #timesheet-section .bg-[#f59e0b] { background-color: #f59e0b !important; }`}</style>
 
           {/* Header */}
           <div className="px-8 py-7 flex justify-between items-start border-b border-[#fcd34d]">
