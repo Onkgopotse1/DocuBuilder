@@ -6,25 +6,26 @@ import { exportPDF } from '../../utils/PDF.Generator';
 export default function DeliveryNotePreview() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [exportError, setExportError] = useState<string | null>(null);
   const [isAutoExporting, setIsAutoExporting] = useState(false);
   const { document } = useDocument();
   const deliveryNote = document.deliveryNote;
 
   const handleExport = async () => {
+    setExportError(null);
     try {
       await exportPDF('deliverynote-section', 'delivery-note');
     } catch (error) {
-      console.error('Delivery note export failed:', error);
+      const message = error instanceof Error ? error.message : String(error);
+      setExportError(`PDF export failed: ${message}`);
     }
   };
 
-  // Auto-download when ?download=1 is present (once)
   useEffect(() => {
     const shouldAutoDownload = searchParams.get('download') === '1';
     if (shouldAutoDownload && !isAutoExporting) {
       setIsAutoExporting(true);
       handleExport().finally(() => {
-        // Remove the query parameter without reloading the page
         setSearchParams({}, { replace: true });
         setIsAutoExporting(false);
       });
@@ -32,10 +33,17 @@ export default function DeliveryNotePreview() {
   }, [searchParams]);
 
   const items = deliveryNote.items;
+  const totalUnits = items.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Helper to format date nicely
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return '—';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+  };
 
   return (
     <div className="min-h-screen font-['Inter',system-ui,sans-serif] pb-16" style={{ backgroundColor: '#0f172a' }}>
-
       <nav className="fixed top-0 left-0 w-full backdrop-blur-md px-5 py-3 flex justify-between items-center z-50" style={{ backgroundColor: 'rgba(15, 23, 42, 0.95)', borderBottom: '1px solid rgba(88, 96, 108, 0.6)' }}>
         <button
           onClick={() => navigate('/delivery-note-builder')}
@@ -69,7 +77,6 @@ export default function DeliveryNotePreview() {
 
       <div className="max-w-2xl mx-auto pt-24 px-4">
         <div id="deliverynote-section" className="bg-[#ffffff] rounded-3xl overflow-hidden shadow-[0_32px_80px_-12px_rgba(0,0,0,0.5)]" style={{ backgroundColor: '#ffffff', color: '#0f172a' }}>
-
           {/* Green header */}
           <div className="bg-[#0f172a] px-8 py-6">
             <div className="flex justify-between items-start">
@@ -85,8 +92,8 @@ export default function DeliveryNotePreview() {
               </div>
               <div className="text-right">
                 <p className="text-2xl font-black text-[#22c55e]">{deliveryNote.dnNumber || 'DN-2025-001'}</p>
-                <p className="text-xs text-[#94a3b8] mt-1">Date: {deliveryNote.date || '20 Apr 2025'}</p>
-                <p className="text-xs text-[#94a3b8]">PO Ref: {deliveryNote.poReference || 'PO-2025-055'}</p>
+                <p className="text-xs text-[#94a3b8] mt-1">Date: {formatDate(deliveryNote.date)}</p>
+                <p className="text-xs text-[#94a3b8]">PO Ref: {deliveryNote.poReference || '—'}</p>
               </div>
             </div>
           </div>
@@ -95,15 +102,15 @@ export default function DeliveryNotePreview() {
           <div className="grid grid-cols-2 border-b border-[#f1f5f9]">
             <div className="p-6 border-r border-[#f1f5f9]">
               <p className="text-[10px] font-black uppercase tracking-widest text-[#16a34a] mb-2">Dispatched From</p>
-              <p className="font-bold text-[#0f172a] text-sm">{deliveryNote.dispatchedFromCompany || 'Nexus Solutions Inc.'}</p>
-              <p className="text-[#64748b] text-sm">{deliveryNote.dispatchedFromContact || 'John Mokoena'}</p>
-              <p className="text-[#94a3b8] text-xs mt-1">{deliveryNote.dispatchedFromAddress || '12 Industrial Rd, Germiston'}</p>
+              <p className="font-bold text-[#0f172a] text-sm">{deliveryNote.dispatchedFromCompany || '—'}</p>
+              <p className="text-[#64748b] text-sm">{deliveryNote.dispatchedFromContact || '—'}</p>
+              <p className="text-[#94a3b8] text-xs mt-1">{deliveryNote.dispatchedFromAddress || '—'}</p>
             </div>
             <div className="p-6">
               <p className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8] mb-2">Deliver To</p>
-              <p className="font-bold text-[#0f172a] text-sm">{deliveryNote.deliverToCompany || 'Acme Innovations'}</p>
-              <p className="text-[#64748b] text-sm">{deliveryNote.deliverToContact || 'Sarah Dlamini'}</p>
-              <p className="text-[#94a3b8] text-xs mt-1">{deliveryNote.deliverToAddress || '456 Corporate Blvd, Rosebank'}</p>
+              <p className="font-bold text-[#0f172a] text-sm">{deliveryNote.deliverToCompany || '—'}</p>
+              <p className="text-[#64748b] text-sm">{deliveryNote.deliverToContact || '—'}</p>
+              <p className="text-[#94a3b8] text-xs mt-1">{deliveryNote.deliverToAddress || '—'}</p>
             </div>
           </div>
 
@@ -113,19 +120,20 @@ export default function DeliveryNotePreview() {
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#16a34a' }}>
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              <span className="text-xs font-semibold" style={{ color: '#047857' }}>Driver: {deliveryNote.driverName || 'Thabo Nkosi'}</span>
+              <span className="text-xs font-semibold" style={{ color: '#047857' }}>Driver: {deliveryNote.driverName || '—'}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#16a34a' }}>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10l1 1h1" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10l1 1h1" />
               </svg>
-              <span className="text-xs font-semibold" style={{ color: '#047857' }}>Vehicle: {deliveryNote.vehicleReg || 'GP 456 789'}</span>
+              <span className="text-xs font-semibold" style={{ color: '#047857' }}>Vehicle: {deliveryNote.vehicleReg || '—'}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#16a34a' }}>
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              <span className="text-xs font-semibold" style={{ color: '#047857' }}>ETA: {deliveryNote.eta || '21 Apr 2025'}</span>
+              <span className="text-xs font-semibold" style={{ color: '#047857' }}>ETA: {formatDate(deliveryNote.eta)}</span>
             </div>
           </div>
 
@@ -157,36 +165,53 @@ export default function DeliveryNotePreview() {
                 </div>
               ))
             ) : (
-              <div className="py-8 text-center text-sm" style={{ color: '#64748b' }}>No items added yet. Go back to builder to add dispatched items.</div>
+              <div className="py-8 text-center text-sm" style={{ color: '#64748b' }}>No items added yet.</div>
             )}
             <div className="mt-3 flex justify-end">
-              <span className="text-xs font-black uppercase tracking-wider" style={{ color: '#64748b' }}>{items.length} items · {items.reduce((s, item) => s + item.quantity, 0)} units total</span>
+              <span className="text-xs font-black uppercase tracking-wider" style={{ color: '#64748b' }}>{items.length} items · {totalUnits} units total</span>
             </div>
           </div>
 
           {/* Signature */}
           <div className="mx-8 mb-8 grid grid-cols-2 gap-6 pt-6" style={{ borderTop: '1px solid #f1f5f9' }}>
-            {[
-              { label: 'Dispatched By', name: 'John Mokoena' },
-              { label: 'Received By', name: 'Signature & date' },
-            ].map((s, i) => (
-              <div key={i}>
-                <p className="text-[10px] font-black uppercase tracking-widest mb-6" style={{ color: '#94a3b8' }}>{s.label}</p>
-                <div className="border-t-2 pt-2" style={{ borderTopStyle: i === 1 ? 'dashed' : 'solid', borderTopColor: i === 1 ? '#e2e8f0' : '#cbd5e1' }}>
-                  <p className="text-xs" style={{ color: i === 1 ? '#cbd5e1' : '#475569', fontWeight: i === 1 ? '400' : 600 }}>{s.name}</p>
-                </div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest mb-6" style={{ color: '#94a3b8' }}>Dispatched By</p>
+              <div className="border-t-2 pt-2" style={{ borderTopColor: '#cbd5e1' }}>
+                <p className="text-xs font-semibold" style={{ color: '#475569' }}>{deliveryNote.dispatchedFromContact || '—'}</p>
               </div>
-            ))}
+            </div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest mb-6" style={{ color: '#94a3b8' }}>Received By</p>
+              <div className="border-t-2 border-dashed pt-2" style={{ borderTopColor: '#e2e8f0' }}>
+                <p className="text-xs" style={{ color: '#cbd5e1' }}>Signature & date</p>
+              </div>
+            </div>
           </div>
+
+          {/* Instructions if present */}
+          {deliveryNote.instructions && (
+            <div className="px-8 pb-6">
+              <p className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: '#94a3b8' }}>Special Instructions</p>
+              <p className="text-sm text-[#475569] leading-relaxed bg-[#f8fafc] rounded-xl px-4 py-3 border border-[#f1f5f9]">
+                {deliveryNote.instructions}
+              </p>
+            </div>
+          )}
 
           <div className="px-8 py-3 flex justify-between" style={{ backgroundColor: '#0f172a' }}>
             <div className="flex items-center gap-1.5">
               <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#34d399' }}></div>
               <span className="text-xs font-medium" style={{ color: '#94a3b8' }}>DocuBuilder</span>
             </div>
-            <span className="text-xs" style={{ color: '#94a3b8' }}>DN-2025-001 · {new Date().toLocaleDateString('en-ZA')}</span>
+            <span className="text-xs" style={{ color: '#94a3b8' }}>{deliveryNote.dnNumber} · {new Date().toLocaleDateString('en-ZA')}</span>
           </div>
         </div>
+
+        {exportError && (
+          <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            {exportError}
+          </div>
+        )}
       </div>
     </div>
   );

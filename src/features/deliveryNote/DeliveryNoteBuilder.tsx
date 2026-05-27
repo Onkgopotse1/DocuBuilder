@@ -47,7 +47,6 @@ export default function DeliveryNoteBuilder() {
 
   return (
     <div className="min-h-screen bg-slate-900 font-['Inter',system-ui,sans-serif] pb-16">
-
       {/* Nav */}
       <nav className="fixed top-0 left-0 w-full bg-slate-900/95 backdrop-blur-md border-b border-emerald-900/60 px-5 py-3 flex justify-between items-center z-50">
         <button
@@ -90,7 +89,6 @@ export default function DeliveryNoteBuilder() {
       </nav>
 
       <div className="max-w-3xl mx-auto pt-24 px-4 space-y-3">
-
         {/* Page label */}
         <div className="px-1 pb-2 flex items-center justify-between">
           <div>
@@ -122,7 +120,7 @@ export default function DeliveryNoteBuilder() {
                 type="date"
                 value={deliveryNote.date}
                 onChange={(e) => updateField('date', e.target.value)}
-                className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-200 text-sm placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 focus:bg-slate-700 transition-all"
+                className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-200 text-sm focus:outline-none focus:border-emerald-500 focus:bg-slate-700 transition-all"
               />
             </div>
             <div>
@@ -273,8 +271,8 @@ export default function DeliveryNoteBuilder() {
                     <label className="sm:hidden text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1 block">Qty</label>
                     <input
                       type="number"
-                      value={String(item.quantity)}
-                      onChange={(e) => updateItem(index, 'quantity', Number(e.target.value) || 0)}
+                      value={item.quantity}
+                      onChange={(e) => updateItem(index, 'quantity', parseFloat(e.target.value) || 0)}
                       className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-200 text-sm placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition-all text-center"
                     />
                   </div>
@@ -297,8 +295,8 @@ export default function DeliveryNoteBuilder() {
                       onChange={(e) => updateItem(index, 'condition', e.target.value)}
                       className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-300 text-sm focus:outline-none focus:border-emerald-500 transition-all"
                     >
-                      {['New', 'Used', 'Refurb'].map((condition) => (
-                        <option key={condition} className="bg-slate-800" value={condition}>{condition}</option>
+                      {['New', 'Used', 'Refurb'].map((c) => (
+                        <option key={c} className="bg-slate-800" value={c}>{c}</option>
                       ))}
                     </select>
                   </div>
@@ -365,7 +363,7 @@ export default function DeliveryNoteBuilder() {
                   type="date"
                   value={deliveryNote.eta}
                   onChange={(e) => updateField('eta', e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-200 text-sm placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition-all"
+                  className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-200 text-sm focus:outline-none focus:border-emerald-500 transition-all"
                 />
               </div>
             </div>
@@ -381,7 +379,6 @@ export default function DeliveryNoteBuilder() {
             />
           </div>
         </div>
-
       </div>
     </div>
   );
