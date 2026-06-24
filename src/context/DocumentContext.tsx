@@ -18,6 +18,41 @@ export interface Invoice {
   items: InvoiceItem[];
 }
 
+// ==================== QUOTE TYPES ====================
+export interface QuoteItem {
+  description: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface Quote {
+  companyName: string;
+  companyEmail: string;
+  companyAddress: string;
+  quoteNumber: string;
+  issueDate: string;
+  expiryDate: string;
+  clientName: string;
+  clientEmail: string;
+  clientAddress: string;
+  items: QuoteItem[];
+  terms: string;
+}
+
+// ==================== CONTRACT TYPES ====================
+export interface Contract {
+  documentTitle: string;
+  effectiveDate: string;
+  governingLaw: string;
+  clientName: string;
+  clientAddress: string;
+  contractorName: string;
+  contractorAddress: string;
+  totalValue: number;
+  depositPercent: number;
+  scope: string;
+}
+
 // ==================== RECEIPT TYPES ====================
 export interface ReceiptItem {
   description: string;
@@ -186,13 +221,15 @@ export interface PurchaseOrder {
 // ==================== DOCUMENT UNION ====================
 export interface DocumentType {
   invoice: Invoice;
+  quote: Quote;
+  contract: Contract;
   receipt: Receipt;
   report: Report;
   expense: Expense;
   timesheet: Timesheet;
   creditNote: CreditNote;
   deliveryNote: DeliveryNote;
-  purchaseOrder: PurchaseOrder;   // <-- new
+  purchaseOrder: PurchaseOrder;
 }
 
 // ==================== INITIAL DEFAULTS ====================
@@ -204,6 +241,33 @@ const defaultInvoice: Invoice = {
   invoiceDate: new Date().toISOString().slice(0, 10),
   taxRate: 0,
   items: [{ description: "", quantity: 1, unitPrice: 0 }],
+};
+
+const defaultQuote: Quote = {
+  companyName: "",
+  companyEmail: "",
+  companyAddress: "",
+  quoteNumber: "",
+  issueDate: new Date().toISOString().slice(0, 10),
+  expiryDate: new Date(Date.now() + 14 * 86400000).toISOString().slice(0, 10),
+  clientName: "",
+  clientEmail: "",
+  clientAddress: "",
+  terms: "",
+  items: [{ description: "", quantity: 1, unitPrice: 0 }],
+};
+
+const defaultContract: Contract = {
+  documentTitle: "",
+  effectiveDate: new Date().toISOString().slice(0, 10),
+  governingLaw: "",
+  clientName: "",
+  clientAddress: "",
+  contractorName: "",
+  contractorAddress: "",
+  totalValue: 0,
+  depositPercent: 0,
+  scope: "",
 };
 
 const defaultReceipt: Receipt = {
@@ -341,6 +405,8 @@ const defaultPurchaseOrder: PurchaseOrder = {
 
 const defaultDocument: DocumentType = {
   invoice: defaultInvoice,
+  quote: defaultQuote,
+  contract: defaultContract,
   receipt: defaultReceipt,
   report: defaultReport,
   expense: defaultExpense,
