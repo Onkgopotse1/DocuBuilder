@@ -24,6 +24,7 @@ import CreditNotePreview from "../features/creditNote/CreditNotePreview.tsx";
 import DeliveryNotePreview from "../features/deliveryNote/DeliveryNotePreview.tsx";
 import PurchaseOrderPreview from "../features/purchaseOrder/PurchaseOrderPreview.tsx";
 import TimesheetPreviw from "../features/timesheet/TimesheetPreview.tsx";
+import Settings from "../features/settings/Settings.tsx";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
       <Route path="/delivery-note-preview" element={<DeliveryNotePreview />} />
       <Route path="/purchase-order-preview" element={<PurchaseOrderPreview />} />
       <Route path="/timesheet-preview" element={<TimesheetPreviw />} />
+      <Route path="settings" element={<Settings />} />
 
     </Routes>
   </DocumentProvider>

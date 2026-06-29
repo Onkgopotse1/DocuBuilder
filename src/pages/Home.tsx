@@ -61,19 +61,19 @@ return (
         <div className="mt-7 pt-7 border-t border-slate-400/20 flex justify-center gap-4 flex-wrap buttons-section">
           <button
             className="bg-slate-50 text-base font-medium py-2.5 px-5 rounded-full inline-flex items-center gap-3 cursor-pointer text-slate-700 transition-all duration-200 hover:bg-white hover:text-blue-800 hover:-translate-y-0.5 button-hover"
-            onClick={() => showDemoMessage('Settings', 'Customize currencies, tax rates, branding, and invoice defaults.')}
+            onClick={() => navigate('/settings')}
           >
             <i className="fas fa-sliders-h text-lg text-blue-500"></i> Settings
           </button>
           <button
             className="bg-slate-50 text-base font-medium py-2.5 px-5 rounded-full inline-flex items-center gap-3 cursor-pointer text-slate-700 transition-all duration-200 hover:bg-white hover:text-blue-800 hover:-translate-y-0.5 button-hover"
-            onClick={() => showDemoMessage('Help', 'Video tutorials, FAQ, live chat, and documentation.')}
+            onClick={() => navigate('/settings?tab=help')}
           >
             <i className="fas fa-question-circle text-lg text-blue-500"></i> Help
           </button>
           <button
             className="bg-slate-50 text-base font-medium py-2.5 px-5 rounded-full inline-flex items-center gap-3 cursor-pointer text-slate-700 transition-all duration-200 hover:bg-white hover:text-blue-800 hover:-translate-y-0.5 button-hover"
-            onClick={() => showDemoMessage('About', 'MyBuilder Pro v2.0 10-in-1 document suite for builders, contractors & agencies.')}
+            onClick={() => navigate('/settings?tab=about')}
           >
             <i className="fas fa-info-circle text-lg text-blue-500"></i> About
           </button>
