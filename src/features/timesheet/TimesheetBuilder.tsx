@@ -33,13 +33,6 @@ export default function TimesheetBuilder() {
     }));
   };
 
-  const removeRow = (index: number) => {
-    setDocument((prev) => ({
-      ...prev,
-      timesheet: { ...prev.timesheet, rows: prev.timesheet.rows.filter((_, i) => i !== index) },
-    }));
-  };
-
   // Calculate daily totals
   const dailyTotals = days.map((_, dayIdx) =>
     timesheet.rows.reduce((sum, row) => sum + (row.hours[dayIdx] || 0), 0)
@@ -195,7 +188,6 @@ export default function TimesheetBuilder() {
               // Choose a color for the dot based on index (same as original)
               const colors = ["bg-amber-400", "bg-slate-300", "bg-sky-400"];
               const dotColor = colors[rowIdx % colors.length];
-              const rowTotal = row.hours.reduce((a, b) => a + b, 0);
               return (
                 <div key={rowIdx} className="grid grid-cols-8 gap-2 items-center group">
                   <div className="flex items-center gap-2">

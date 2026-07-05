@@ -4,10 +4,6 @@ import { builders } from '../data/builders';
 export default function Home() {
   const navigate = useNavigate();
 
-  const showDemoMessage = (title: string, message: string) => {
-    alert(` ${title}\n\n${message}\n\n(Full functionality would be implemented here.)`);
-  };
-
 return (
   <div className="h-screen bg-slate-100 home-container ">
     <div className="h-full bg-white/90 shadow-2xl p-8 flex flex-col">

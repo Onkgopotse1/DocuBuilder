@@ -1,5 +1,4 @@
 
-
 export const pageThemes = {
   invoice: {
     light: 'bg-blue-50',
@@ -48,3 +47,10 @@ export const pageThemes = {
 } as const;
 
 export type PageKey = keyof typeof pageThemes;
+
+export const homePageTheme = {
+  light: 'bg-slate-100',
+  dark: 'bg-slate-900',
+} as const;
+
+export type HomePageTheme = keyof typeof homePageTheme;
