@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
+import { useTheme } from "../../context/Theme Context.tsx";
 import type { ReportItem } from "../../context/DocumentContext";
+import { pageThemes } from "../../data/pageThemes";
 
 export default function ReportBuilder() {
   const navigate = useNavigate();
   const { document, setDocument } = useDocument();
+  const { theme } = useTheme();
   const report = document.report;
+  const pageTheme = pageThemes.Report;
 
   const updateField = (field: keyof typeof report, value: any) => {
     setDocument((prev) => ({ ...prev, report: { ...prev.report, [field]: value } }));
@@ -39,9 +43,9 @@ export default function ReportBuilder() {
   const total = subtotal + tax;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] font-['Inter',system-ui,sans-serif] text-[#1e293b] pb-16">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] ${theme === 'dark' ? 'text-slate-100' : 'text-[#1e293b]'} pb-16`}>
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 px-5 py-3 flex justify-between items-center z-50 shadow-sm">
+      <nav className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 px-5 py-3 flex justify-between items-center z-50 shadow-sm dark:bg-slate-900/80 dark:border-slate-700">
         <button
           onClick={() => navigate("/")}
           className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors active:scale-95"

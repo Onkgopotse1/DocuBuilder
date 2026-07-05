@@ -1,13 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
+import { useTheme } from "../../context/Theme Context.tsx";
 import type { TimesheetRow } from "../../context/DocumentContext";
+import { pageThemes } from "../../data/pageThemes";
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export default function TimesheetBuilder() {
   const navigate = useNavigate();
   const { document, setDocument } = useDocument();
+  const { theme } = useTheme();
   const timesheet = document.timesheet;
+  const pageTheme = pageThemes.Timesheet;
 
   const updateField = (field: keyof typeof timesheet, value: any) => {
     setDocument((prev) => ({ ...prev, timesheet: { ...prev.timesheet, [field]: value } }));
@@ -43,7 +47,7 @@ export default function TimesheetBuilder() {
   const totalHours = dailyTotals.reduce((a, b) => a + b, 0) + timesheet.overtimeHours;
 
   return (
-    <div className="min-h-screen bg-[#fdf8f0] font-['Inter',system-ui,sans-serif] text-slate-800 pb-16">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'} pb-16`}>
       {/* Nav */}
       <nav className="fixed top-0 left-0 w-full bg-[#fdf8f0]/90 backdrop-blur-md border-b border-amber-200/60 px-5 py-3 flex justify-between items-center z-50">
         <button

@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { useDocument } from '../../context/DocumentContext';
+import { useTheme } from '../../context/Theme Context.tsx';
 import type { PurchaseOrderItem } from '../../context/DocumentContext';
+import { pageThemes } from '../../data/pageThemes';
 
 export default function PurchaseOrderBuilder() {
   const navigate = useNavigate();
   const { document, setDocument } = useDocument();
+  const { theme } = useTheme();
   const po = document.purchaseOrder;
+  const pageTheme = pageThemes.PurchaseOrderBuilder;
 
   const updateField = (field: keyof typeof po, value: any) => {
     setDocument((prev) => ({
@@ -56,7 +60,7 @@ export default function PurchaseOrderBuilder() {
   const total = subtotal + vatAmount;
 
   return (
-    <div className="min-h-screen bg-[#f0f4ff] font-['Inter',system-ui,sans-serif] text-slate-800 pb-16">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'} pb-16`}>
       {/* Nav */}
       <nav className="fixed top-0 left-0 w-full bg-white border-b-2 border-blue-600 px-5 py-3 flex justify-between items-center z-50">
         <button

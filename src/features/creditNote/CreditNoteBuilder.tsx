@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
+import { useTheme } from "../../context/Theme Context.tsx";
 import type { CreditNoteItem } from "../../context/DocumentContext";
+import { pageThemes } from "../../data/pageThemes";
 
 const inputCls = "w-full px-0 py-2 bg-transparent border-b-2 border-slate-200 text-slate-800 text-sm placeholder:text-slate-300 focus:outline-none focus:border-rose-500 transition-colors";
 const labelCls = "text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1";
@@ -8,7 +10,9 @@ const labelCls = "text-[10px] font-black uppercase tracking-widest text-slate-40
 export default function CreditNoteBuilder() {
   const navigate = useNavigate();
   const { document, setDocument } = useDocument();
+  const { theme } = useTheme();
   const creditNote = document.creditNote;
+  const pageTheme = pageThemes.CreditNote;
 
   const updateField = (field: keyof typeof creditNote, value: any) => {
     setDocument((prev) => ({ ...prev, creditNote: { ...prev.creditNote, [field]: value } }));
@@ -55,7 +59,7 @@ export default function CreditNoteBuilder() {
   ];
 
   return (
-    <div className="min-h-screen bg-white font-['Inter',system-ui,sans-serif] text-slate-800 pb-16">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'} pb-16`}>
       <div className="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-500 to-pink-400 z-50"></div>
 
       <nav className="fixed top-1 left-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-100 px-5 py-3 flex justify-between items-center z-40 shadow-sm">

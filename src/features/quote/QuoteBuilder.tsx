@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { useDocument } from '../../context/DocumentContext';
+import { useTheme } from '../../context/Theme Context.tsx';
 import type { QuoteItem } from '../../context/DocumentContext';
+import { pageThemes } from '../../data/pageThemes';
 
 export default function QuoteBuilder() {
   const navigate = useNavigate();
   const { document, setDocument } = useDocument();
+  const { theme } = useTheme();
   const quote = document.quote;
+  const pageTheme = pageThemes.quote;
 
   const updateField = (field: keyof typeof quote, value: any) => {
     setDocument((prev) => ({ ...prev, quote: { ...prev.quote, [field]: value } }));
@@ -36,8 +40,8 @@ export default function QuoteBuilder() {
   const total = subtotal + tax;
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col">
-      <nav className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-xl border-b border-slate-200/50">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-sans ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'} flex flex-col`}>
+      <nav className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-xl border-b border-slate-200/50 dark:bg-slate-900/80 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center gap-4 sm:gap-8">

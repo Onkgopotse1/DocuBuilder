@@ -1,5 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
+import { useTheme } from '../../context/Theme Context.tsx';
 
 type Tab = 'settings' | 'help' | 'about';
 
@@ -71,7 +72,7 @@ export default function Settings() {
 
 // ---------- Settings Panel ----------
 function SettingsPanel() {
-  const [theme, setTheme] = useState('light');
+  const { theme, setTheme } = useTheme();
   const [currency, setCurrency] = useState('ZAR');
   const [notifications, setNotifications] = useState(true);
 

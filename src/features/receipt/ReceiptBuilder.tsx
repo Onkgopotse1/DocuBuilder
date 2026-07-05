@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
+import { useTheme } from "../../context/Theme Context.tsx";
 import type { ReceiptItem } from "../../context/DocumentContext";
+import { pageThemes } from "../../data/pageThemes";  
 
 export default function ReceiptBuilder() {
   const navigate = useNavigate();
   const { document, setDocument } = useDocument();
+  const { theme } = useTheme();
   const receipt = document.receipt;
+  const pageTheme = pageThemes.receipt;
 
   const updateField = (field: keyof typeof receipt, value: any) => {
     setDocument((prev) => ({ ...prev, receipt: { ...prev.receipt, [field]: value } }));
@@ -39,7 +43,7 @@ export default function ReceiptBuilder() {
   const total = subtotal + tax;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50/50 via-slate-50 to-teal-50/50 font-sans text-slate-800 pb-12">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-sans ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'} pb-12`}>
       {/* Navbar */}
       <div className="pt-6 px-4 sm:px-6 mb-8 z-50 sticky top-0">
         <nav className="max-w-7xl mx-auto bg-white/80 backdrop-blur-xl border border-white shadow-sm rounded-3xl px-4 sm:px-6 py-3 flex justify-between items-center">

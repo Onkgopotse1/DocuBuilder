@@ -26,8 +26,10 @@ import PurchaseOrderPreview from "../features/purchaseOrder/PurchaseOrderPreview
 import TimesheetPreviw from "../features/timesheet/TimesheetPreview.tsx";
 import Settings from "../features/settings/Settings.tsx";
 
+
 function App() {
   return (
+    
      <DocumentProvider>
     <Routes>
       <Route path="/" element={<Home />} />
@@ -61,6 +63,7 @@ function App() {
 
     </Routes>
   </DocumentProvider>
+  
   );
 }
 

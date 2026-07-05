@@ -1,10 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { useDocument } from '../../context/DocumentContext';
+import { useTheme } from '../../context/Theme Context.tsx';
+import { pageThemes } from '../../data/pageThemes';
 
 export default function ContractBuilder() {
   const navigate = useNavigate();
   const { document, setDocument } = useDocument();
+  const { theme } = useTheme();
   const contract = document.contract;
+  const pageTheme = pageThemes.contract;
 
   const updateField = (field: keyof typeof contract, value: any) => {
     setDocument((prev) => ({
@@ -14,7 +18,7 @@ export default function ContractBuilder() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-sans ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'} flex flex-col`}>
       {/* Header – same as before */}
       <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-200/60 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

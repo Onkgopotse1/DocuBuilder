@@ -1,12 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import  { useDocument } from "../../context/DocumentContext";
+import { useTheme } from "../../context/Theme Context.tsx";
 import type { InvoiceItem } from "../../context/DocumentContext";
+import { pageThemes } from "../../data/pageThemes";
 
 
 export default function InvoiceBuilder() {
   const navigate = useNavigate();
   const { document, setDocument } = useDocument();
+  const { theme } = useTheme();
   const invoice = document.invoice;
+  const pageTheme = pageThemes.invoice;
 
   const updateField = (field: keyof typeof invoice, value: any) => {
     setDocument((prev) => ({ ...prev, invoice: { ...prev.invoice, [field]: value } }));
@@ -38,8 +42,8 @@ export default function InvoiceBuilder() {
 
 
   return (
-    <div className="min-h-screen bg-slate-50 font-['Inter',system-ui,sans-serif] text-slate-800 pb-12">
-      <nav className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex justify-between items-center z-50 shadow-sm">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'} pb-12`}>
+      <nav className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex justify-between items-center z-50 shadow-sm dark:bg-slate-900/90 dark:border-slate-700">
         <button onClick={() => navigate("/")} className="flex items-center justify-center w-11 h-11 md:w-10 md:h-10 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors overflow-hidden">
           <span className="text-slate-600 text-sm">←</span>
         </button>
