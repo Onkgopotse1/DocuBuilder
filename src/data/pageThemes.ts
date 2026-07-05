@@ -42,7 +42,7 @@ export const pageThemes = {
   },
   CreditNote: {
     light: 'bg-[#fef2f2]',
-    dark: 'bg-rose-950',
+    dark: 'bg-indigo-950',
   },
 } as const;
 
@@ -50,7 +50,7 @@ export type PageKey = keyof typeof pageThemes;
 
 export const homePageTheme = {
   light: 'bg-slate-100',
-  dark: 'bg-slate-900',
+  dark: 'bg-indigo-950',
 } as const;
 
 export type HomePageTheme = keyof typeof homePageTheme;

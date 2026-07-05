@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDocument } from '../../context/DocumentContext';
+import { useTheme } from '../../context/Theme Context.tsx';
 import { exportPDF } from '../../utils/PDF.Generator';
+import { pageThemes } from '../../data/pageThemes';
 
 export default function ContractPreview() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const pageTheme = pageThemes.contract;
   const { document, setDocument } = useDocument();
   const contract = document.contract;
 
@@ -47,7 +51,7 @@ export default function ContractPreview() {
   const displayContract = localContract;
 
   return (
-    <div className="min-h-screen bg-slate-200/60 font-sans text-slate-800">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-sans transition-colors duration-300 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'}`}>
       <nav className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-lg border-b border-slate-300 shadow-sm px-4 sm:px-8">
         <div className="max-w-5xl mx-auto h-16 flex items-center justify-between">
           <button

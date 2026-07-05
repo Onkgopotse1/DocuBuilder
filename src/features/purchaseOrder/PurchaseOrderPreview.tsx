@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDocument } from '../../context/DocumentContext';
+import { useTheme } from '../../context/Theme Context.tsx';
 import { exportPDF } from '../../utils/PDF.Generator';
+import { pageThemes } from '../../data/pageThemes';
 
 export default function PurchaseOrderPreview() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const pageTheme = pageThemes.PurchaseOrderBuilder;
   const [searchParams, setSearchParams] = useSearchParams();
   const [exportError, setExportError] = useState<string | null>(null);
   const [isAutoExporting, setIsAutoExporting] = useState(false);
@@ -48,7 +52,7 @@ export default function PurchaseOrderPreview() {
     : po.paymentTerms;
 
   return (
-    <div className="min-h-screen bg-[#f0f4ff] font-['Inter',system-ui,sans-serif] pb-16">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] pb-16 transition-colors duration-300 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'}`}>
       <nav className="fixed top-0 left-0 w-full bg-white border-b-2 border-blue-600 px-5 py-3 flex justify-between items-center z-50">
         <button
           onClick={() => navigate('/purchase-order-builder')}

@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
+import { useTheme } from "../../context/Theme Context.tsx";
 import { exportPDF } from "../../utils/PDF.Generator";
+import { pageThemes } from "../../data/pageThemes";
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export default function TimesheetPreview() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const pageTheme = pageThemes.Timesheet;
   const [searchParams, setSearchParams] = useSearchParams();
   const [exportError, setExportError] = useState<string | null>(null);
   const [isAutoExporting, setIsAutoExporting] = useState(false);
@@ -50,7 +54,7 @@ export default function TimesheetPreview() {
   }, [searchParams]);
 
   return (
-    <div className="min-h-screen bg-[#fdf8f0] font-['Inter',system-ui,sans-serif] pb-16">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] pb-16 transition-colors duration-300 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'}`}>
       <nav className="fixed top-0 left-0 w-full bg-[#fdf8f0]/90 backdrop-blur-md border-b border-amber-200/60 px-5 py-3 flex justify-between items-center z-50">
         <button
           onClick={() => navigate("/timesheet-builder")}

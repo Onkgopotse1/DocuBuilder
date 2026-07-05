@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
+import { useTheme } from "../../context/Theme Context.tsx";
 import { exportPDF } from "../../utils/PDF.Generator";
+import { pageThemes } from "../../data/pageThemes";
 
 export default function InvoicePreview() {
 const navigate = useNavigate();
+const { theme } = useTheme();
+const pageTheme = pageThemes.invoice;
 
 //-----this code calculates the subtotal, tax, and total amounts for the invoice based on the items and tax rate provided in the document context-----------------
   const { document } = useDocument();
@@ -49,7 +53,7 @@ const navigate = useNavigate();
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 font-['Inter',system-ui,-apple-system,sans-serif] py-8 px-4 sm:px-6 text-slate-800">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,-apple-system,sans-serif] py-8 px-4 sm:px-6 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'}`}>
       <div className="max-w-4xl mx-auto pt-20">
         <nav className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex justify-between items-center z-50 shadow-sm">
           <div className="flex gap-3">

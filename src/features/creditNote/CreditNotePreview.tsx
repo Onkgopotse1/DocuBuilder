@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
+import { useTheme } from "../../context/Theme Context.tsx";
 import { exportPDF } from "../../utils/PDF.Generator";
+import { pageThemes } from "../../data/pageThemes";
 
 export default function CreditNotePreview() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const pageTheme = pageThemes.CreditNote;
   const [searchParams, setSearchParams] = useSearchParams();
   const [exportError, setExportError] = useState<string | null>(null);
   const [isAutoExporting, setIsAutoExporting] = useState(false);
@@ -46,7 +50,7 @@ export default function CreditNotePreview() {
     : creditNote.reason;
 
   return (
-    <div className="min-h-screen bg-white font-['Inter',system-ui,sans-serif] pb-16">
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] pb-16 transition-colors duration-300 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'}`}>
       <div className="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-500 to-pink-400 z-50"></div>
 
       <nav className="fixed top-1 left-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-100 px-5 py-3 flex justify-between items-center z-40 shadow-sm">

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDocument } from '../../context/DocumentContext';
+import { useTheme } from '../../context/Theme Context.tsx';
 import { exportPDF } from '../../utils/PDF.Generator';
 
 export default function DeliveryNotePreview() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const [exportError, setExportError] = useState<string | null>(null);
   const [isAutoExporting, setIsAutoExporting] = useState(false);
@@ -65,7 +67,7 @@ export default function DeliveryNotePreview() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', fontFamily: "'Inter', system-ui, sans-serif", paddingBottom: '4rem', backgroundColor: colors.slate50 }}>
+    <div style={{ minHeight: '100vh', fontFamily: "'Inter', system-ui, sans-serif", paddingBottom: '4rem', backgroundColor: theme === 'dark' ? '#0f172a' : colors.slate50 }}>
       {/* Navigation Bar */}
       <nav
         style={{

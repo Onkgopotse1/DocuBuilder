@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDocument } from '../../context/DocumentContext';
+import { useTheme } from "../../context/Theme Context.tsx";
 import { exportPDF } from "../../utils/PDF.Generator";
+import { pageThemes } from "../../data/pageThemes";
 
 export default function QuotePreview() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const pageTheme = pageThemes.quote;
 
   //-----this code calculates the subtotal, tax, and total amounts for the quote based on the items provided in the document context-----------------
   const { document } = useDocument();
@@ -47,7 +51,7 @@ export default function QuotePreview() {
 //-------------------------------
 
   return (
-    <div className="min-h-screen bg-[#f1f5f9] font-sans" style={{ color: '#0f172a', backgroundColor: '#f1f5f9' }}>
+    <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-sans transition-colors duration-300`} style={{ color: theme === 'dark' ? '#f8fafc' : '#0f172a' }}>
       
       {/* --- MATCHED NAVBAR --- */}
       <nav className="fixed top-0 z-50 w-full backdrop-blur-xl" style={{ backgroundColor: 'rgba(255,255,255,0.7)', borderBottom: '1px solid rgba(226,232,240,0.5)' }}>
