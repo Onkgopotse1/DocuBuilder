@@ -42,7 +42,7 @@ export default function ReceiptPreview() {
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-sans transition-colors duration-300 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-900'}`}>
-      <nav className="fixed top-0 z-50 w-full bg-white/70 backdrop-blur-xl border-b border-slate-200/50">
+      <nav className={`fixed top-0 z-50 w-full ${theme === 'dark' ? 'bg-slate-900/70 border-slate-700/50' : 'bg-white/70 border-slate-200/50'} backdrop-blur-xl border-b`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center gap-4">

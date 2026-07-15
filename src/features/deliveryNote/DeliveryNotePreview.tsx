@@ -81,8 +81,8 @@ export default function DeliveryNotePreview() {
           justifyContent: 'space-between',
           alignItems: 'center',
           zIndex: 50,
-          backgroundColor: 'rgba(255,255,255,0.95)',
-          borderBottom: `1px solid ${colors.slate200}`,
+          backgroundColor: theme === 'dark' ? 'rgba(15,23,42,0.95)' : 'rgba(255,255,255,0.95)',
+          borderBottom: `1px solid ${theme === 'dark' ? '#334155' : colors.slate200}`,
         }}
       >
         <button

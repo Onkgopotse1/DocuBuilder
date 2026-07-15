@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { builders } from '../data/builders';
 import { useTheme } from '../context/Theme Context.tsx';
 import { homePageTheme as homePageThemeConfig } from '../data/pageThemes';
+import docIcon from '../assets/doc.png';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function Home() {
       {/* Left Section */}
       <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
         <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-xl sm:rounded-2xl shadow-lg">
-          <img src="src\assets\doc.png" className="fas fa-hard-hat text-xl sm:text-2xl text-white"></img>
+          <img src={docIcon} alt="DocuBuilder" className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />
         </div>
         <div>
           <h1 className={`text-xl sm:text-3xl font-bold bg-gradient-to-r ${isDark ? 'from-slate-100 to-blue-400' : 'from-slate-900 to-blue-600'} bg-clip-text text-transparent tracking-tight`}>

@@ -64,7 +64,7 @@ export default function ExpensePreview() {
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] pb-16 transition-colors duration-300 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'}`}>
-      <nav className="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 px-5 py-3 flex justify-between items-center z-50">
+      <nav className={`fixed top-0 left-0 w-full ${theme === 'dark' ? 'bg-slate-900/95 border-slate-700' : 'bg-white/95 border-slate-200'} backdrop-blur-md border-b px-5 py-3 flex justify-between items-center z-50`}>
         <button
           onClick={() => navigate("/expense-builder")}
           className="group flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-all duration-200 active:scale-90"

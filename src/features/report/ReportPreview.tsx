@@ -49,7 +49,7 @@ export default function ReportPreview() {
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] pb-16 transition-colors duration-300 ${theme === 'dark' ? 'text-slate-100' : 'text-[#1e293b]'}`}>
-      <nav className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 px-5 py-3 flex justify-between items-center z-50 shadow-sm">
+      <nav className={`fixed top-0 left-0 w-full ${theme === 'dark' ? 'bg-slate-900/80 border-slate-700' : 'bg-white/80 border-slate-200'} backdrop-blur-md border-b px-5 py-3 flex justify-between items-center z-50 shadow-sm`}>
         <button
           onClick={() => navigate("/report-builder")}
           className="group flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 text-slate-600 hover:bg-violet-600 hover:text-white transition-all duration-300 shadow-sm active:scale-90"

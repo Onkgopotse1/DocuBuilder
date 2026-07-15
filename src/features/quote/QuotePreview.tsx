@@ -54,7 +54,7 @@ export default function QuotePreview() {
     <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-sans transition-colors duration-300`} style={{ color: theme === 'dark' ? '#f8fafc' : '#0f172a' }}>
       
       {/* --- MATCHED NAVBAR --- */}
-      <nav className="fixed top-0 z-50 w-full backdrop-blur-xl" style={{ backgroundColor: 'rgba(255,255,255,0.7)', borderBottom: '1px solid rgba(226,232,240,0.5)' }}>
+      <nav className="fixed top-0 z-50 w-full backdrop-blur-xl" style={{ backgroundColor: theme === 'dark' ? 'rgba(15,23,42,0.85)' : 'rgba(255,255,255,0.7)', borderBottom: theme === 'dark' ? '1px solid rgba(51,65,85,0.7)' : '1px solid rgba(226,232,240,0.5)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center gap-4">

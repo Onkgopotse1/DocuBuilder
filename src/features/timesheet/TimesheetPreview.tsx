@@ -22,7 +22,7 @@ export default function TimesheetPreview() {
   );
   const totalRegularHours = dailyTotals.reduce((a, b) => a + b, 0);
   const totalHours = totalRegularHours + timesheet.overtimeHours;
-  const regularPay = (totalRegularHours - timesheet.overtimeHours) * timesheet.hourlyRate;
+  const regularPay = totalRegularHours * timesheet.hourlyRate;
   const overtimePay = timesheet.overtimeHours * timesheet.overtimeRate;
   const totalEarnings = regularPay + overtimePay;
 
@@ -194,7 +194,7 @@ export default function TimesheetPreview() {
             <div className="space-y-2 max-w-xs ml-auto">
               <div className="flex justify-between text-sm">
                 <span className="text-[#64748b]">
-                  {totalRegularHours - timesheet.overtimeHours}h regular @ R{timesheet.hourlyRate}/hr
+                  {totalRegularHours}h regular @ R{timesheet.hourlyRate}/hr
                 </span>
                 <span className="font-semibold text-[#334155]">R{regularPay.toFixed(2)}</span>
               </div>

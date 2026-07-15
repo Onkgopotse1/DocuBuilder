@@ -55,7 +55,7 @@ const pageTheme = pageThemes.invoice;
   return (
     <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,-apple-system,sans-serif] py-8 px-4 sm:px-6 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'}`}>
       <div className="max-w-4xl mx-auto pt-20">
-        <nav className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex justify-between items-center z-50 shadow-sm">
+        <nav className={`fixed top-0 left-0 w-full ${theme === 'dark' ? 'bg-slate-900/90 border-slate-700' : 'bg-white/90 border-slate-200'} backdrop-blur-md border-b px-6 py-4 flex justify-between items-center z-50 shadow-sm`}>
           <div className="flex gap-3">
             <button onClick={() => navigate("/invoice-builder")} className="flex items-center justify-center px-4 py-2 bg-white text-slate-700 border border-slate-200 text-sm font-semibold rounded-xl hover:bg-slate-50 transition-all shadow-sm gap-2">
               <span>←</span>

@@ -53,7 +53,7 @@ export default function PurchaseOrderPreview() {
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] pb-16 transition-colors duration-300 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'}`}>
-      <nav className="fixed top-0 left-0 w-full bg-white border-b-2 border-blue-600 px-5 py-3 flex justify-between items-center z-50">
+      <nav className={`fixed top-0 left-0 w-full ${theme === 'dark' ? 'bg-slate-900' : 'bg-white'} border-b-2 border-blue-600 px-5 py-3 flex justify-between items-center z-50`}>
         <button
           onClick={() => navigate('/purchase-order-builder')}
           className="group w-10 h-10 rounded-lg border-2 border-blue-200 flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all active:scale-95"

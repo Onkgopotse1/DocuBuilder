@@ -52,7 +52,7 @@ export default function ContractPreview() {
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? pageTheme.dark : pageTheme.light} font-sans transition-colors duration-300 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'}`}>
-      <nav className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-lg border-b border-slate-300 shadow-sm px-4 sm:px-8">
+      <nav className={`sticky top-0 z-50 w-full ${theme === 'dark' ? 'bg-slate-900/90 border-slate-700' : 'bg-white/90 border-slate-300'} backdrop-blur-lg border-b shadow-sm px-4 sm:px-8`}>
         <div className="max-w-5xl mx-auto h-16 flex items-center justify-between">
           <button
             className="group flex items-center gap-2 text-slate-600 font-bold text-sm hover:text-blue-700 transition-colors"
