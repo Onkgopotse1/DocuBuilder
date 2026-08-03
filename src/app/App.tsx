@@ -25,6 +25,7 @@ import DeliveryNotePreview from "../features/deliveryNote/DeliveryNotePreview.ts
 import PurchaseOrderPreview from "../features/purchaseOrder/PurchaseOrderPreview.tsx";
 import TimesheetPreviw from "../features/timesheet/TimesheetPreview.tsx";
 import Settings from "../features/settings/Settings.tsx";
+import { NotFound } from "../features/notFound/NotFound.tsx";
 
 
 function App() {
@@ -49,6 +50,8 @@ function App() {
       <Route path="/delivery-note-builder" element={<DeliveryNoteBuilder />} />
       <Route path="/purchase-order-builder" element={<PurchaseOrderBuilder />} />
       
+      <Route path="*" element={<NotFound />} />
+
       <Route path="/invoice-preview" element={<InvoicePreview />} />
       <Route path="/quote-preview" element={<QuotePreview />} />
       <Route path="/contract-preview" element={<ContractPreview />} />
