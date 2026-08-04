@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDocument } from '../../context/DocumentContext';
 import { useTheme } from '../../context/Theme Context.tsx';
 import { exportPDF } from '../../utils/PDF.Generator';
+import { pageThemes } from "../../data/pageThemes";
 
 export default function DeliveryNotePreview() {
   const navigate = useNavigate();
@@ -12,6 +13,8 @@ export default function DeliveryNotePreview() {
   const [isAutoExporting, setIsAutoExporting] = useState(false);
   const { document } = useDocument();
   const deliveryNote = document.deliveryNote;
+  const isDark = theme === 'dark';
+  const pageTheme = pageThemes.Delivery_Note;
 
   const handleExport = async () => {
     setExportError(null);
@@ -67,50 +70,15 @@ export default function DeliveryNotePreview() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', fontFamily: "'Inter', system-ui, sans-serif", paddingBottom: '4rem', backgroundColor: theme === 'dark' ? '#0f172a' : colors.slate50 }}>
+    <div   className={`minHeight: '100vh', ${isDark ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] pb-16 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
       {/* Navigation Bar */}
-      <nav
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          backdropFilter: 'blur(8px)',
-          padding: '0.75rem 1.25rem',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          zIndex: 50,
-          backgroundColor: theme === 'dark' ? 'rgba(15,23,42,0.95)' : 'rgba(255,255,255,0.95)',
-          borderBottom: `1px solid ${theme === 'dark' ? '#334155' : colors.slate200}`,
-        }}
-      >
+    <nav className={"fixed top-0 left-0 w-full z-50 flex items-center justify-between py-3 px-5  border-b border-slate-200 dark:border-slate-700" }>
         <button
           onClick={() => navigate('/delivery-note-builder')}
-          style={{
-            width: '2.5rem',
-            height: '2.5rem',
-            borderRadius: '0.5rem',
-            border: `1px solid ${colors.slate200}`,
-            backgroundColor: colors.slate100,
-            color: colors.slate600,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'all 0.15s',
-            cursor: 'pointer',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = colors.slate200;
-            e.currentTarget.style.color = colors.slate900;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = colors.slate100;
-            e.currentTarget.style.color = colors.slate600;
-          }}
+          className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-slate-600 cursor-pointer transition-colors hover:bg-slate-200 hover:text-slate-900"
         >
           <svg
-            style={{ width: '1.25rem', height: '1.25rem', transition: 'transform 0.15s' }}
+            className="w-5 h-5 transition-transform"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -119,11 +87,11 @@ export default function DeliveryNotePreview() {
           </svg>
         </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <svg style={{ width: '1rem', height: '1rem', color: colors.emerald500 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="flex items-center gap-2">
+          <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
           </svg>
-          <span style={{ fontWeight: 700, fontSize: '0.875rem', display: 'none', color: colors.slate700 }} className="sm:block">
+          <span className="hidden sm:block font-bold text-sm text-slate-700">
             Delivery Note Preview
           </span>
         </div>
@@ -131,27 +99,12 @@ export default function DeliveryNotePreview() {
         <button
           type="button"
           onClick={handleExport}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            borderRadius: '0.5rem',
-            fontWeight: 900,
-            fontSize: '0.875rem',
-            transition: 'all 0.15s',
-            backgroundColor: colors.emerald600,
-            color: colors.white,
-            padding: '0.5rem 1.25rem',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = colors.emerald500)}
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = colors.emerald600)}
+          className="flex items-center gap-2 rounded-lg font-black text-sm transition-colors bg-emerald-600 text-white py-2 px-5 cursor-pointer hover:bg-emerald-500"
         >
-          <svg style={{ width: '1rem', height: '1rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
-          <span style={{ display: 'none' }} className="sm:inline">Download PDF</span>
+          <span className="hidden sm:inline">Download PDF</span>
         </button>
       </nav>
 
