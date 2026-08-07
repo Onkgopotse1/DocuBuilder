@@ -16,10 +16,6 @@ export const pageThemes = {
     light: 'bg-amber-50',
     dark: 'bg-amber-950',
   },
-  Credit: {
-    light: 'bg-white',
-    dark: 'bg-rose-950',
-  },
   Delivery_Note: {
     light: 'bg-slate-50',
     dark: 'bg-cyan-950',
