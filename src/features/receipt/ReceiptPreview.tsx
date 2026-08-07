@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
 import { useTheme } from "../../context/Theme Context.tsx";
 import { exportPDF } from "../../utils/PDF.Generator";
+import { calculateTotals } from "../../utils/calculateTotals";
 import { pageThemes } from "../../data/pageThemes";
 
 export default function ReceiptPreview() {
@@ -15,9 +16,11 @@ export default function ReceiptPreview() {
   const { document } = useDocument();
   const receipt = document.receipt;
 
-  const subtotal = receipt.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-  const tax = subtotal * (receipt.taxRate / 100);
-  const total = subtotal + tax;
+  const { subtotal, tax, total } = calculateTotals(
+    receipt.items,
+    (item) => item.quantity * item.unitPrice,
+    receipt.taxRate
+  );
 
   const handleExport = async () => {
     setExportError(null);

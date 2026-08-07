@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
 import { useTheme } from "../../context/Theme Context.tsx";
 import type { ReportItem } from "../../context/DocumentContext";
+import { calculateTotals } from "../../utils/calculateTotals";
 import { pageThemes } from "../../data/pageThemes";
 
 export default function ReportBuilder() {
@@ -39,9 +40,11 @@ export default function ReportBuilder() {
     }));
   };
 
-  const subtotal = report.items.reduce((sum, item) => sum + item.amount, 0);
-  const tax = subtotal * (report.taxRate / 100);
-  const total = subtotal + tax;
+  const { subtotal, tax, total } = calculateTotals(
+    report.items,
+    (item) => item.amount,
+    report.taxRate
+  );
 
   return (
     <div className={`min-h-screen ${isDark ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] ${isDark ? 'text-slate-100' : 'text-[#1e293b]'} pb-16`}>

@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDocument } from '../../context/DocumentContext';
 import { useTheme } from '../../context/Theme Context.tsx';
 import { exportPDF } from '../../utils/PDF.Generator';
+import { calculateTotals } from '../../utils/calculateTotals';
 import { pageThemes } from '../../data/pageThemes';
 
 export default function PurchaseOrderPreview() {
@@ -15,9 +16,11 @@ export default function PurchaseOrderPreview() {
   const { document } = useDocument();
   const po = document.purchaseOrder;
 
-  const subtotal = po.items.reduce((sum, item) => sum + item.total, 0);
-  const vatAmount = subtotal * (po.vatRate / 100);
-  const total = subtotal + vatAmount;
+  const { subtotal, tax: vatAmount, total } = calculateTotals(
+    po.items,
+    (item) => item.total,
+    po.vatRate
+  );
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '—';

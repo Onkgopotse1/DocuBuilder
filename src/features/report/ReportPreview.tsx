@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
 import { useTheme } from "../../context/Theme Context.tsx";
 import { exportPDF } from "../../utils/PDF.Generator";
+import { calculateTotals } from "../../utils/calculateTotals";
 import { pageThemes } from "../../data/pageThemes";
 
 export default function ReportPreview() {
@@ -15,9 +16,11 @@ export default function ReportPreview() {
   const { document } = useDocument();
   const report = document.report;
 
-  const subtotal = report.items.reduce((sum, item) => sum + item.amount, 0);
-  const tax = subtotal * (report.taxRate / 100);
-  const total = subtotal + tax;
+  const { subtotal, tax, total } = calculateTotals(
+    report.items,
+    (item) => item.amount,
+    report.taxRate
+  );
 
   const handleExport = async () => {
     setExportError(null);

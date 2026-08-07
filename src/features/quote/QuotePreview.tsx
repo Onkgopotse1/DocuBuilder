@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDocument } from '../../context/DocumentContext';
 import { useTheme } from "../../context/Theme Context.tsx";
 import { exportPDF } from "../../utils/PDF.Generator";
+import { calculateTotals, QUOTE_TAX_RATE_PERCENT } from "../../utils/calculateTotals";
 import { pageThemes } from "../../data/pageThemes";
 
 export default function QuotePreview() {
@@ -14,9 +15,11 @@ export default function QuotePreview() {
   const { document } = useDocument();
   const quote = document.quote;
 
-  const subtotal = quote.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-  const tax = subtotal * 0.15; // Assuming 15% tax rate, can be made configurable later
-  const total = subtotal + tax;
+  const { subtotal, tax, total } = calculateTotals(
+    quote.items,
+    (item) => item.quantity * item.unitPrice,
+    QUOTE_TAX_RATE_PERCENT
+  );
   //---------------------
 
 //-----this function is responsible for exporting the quote as a PDF when the download button is clicked-----------------

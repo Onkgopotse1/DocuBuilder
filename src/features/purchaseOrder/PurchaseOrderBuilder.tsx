@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDocument } from '../../context/DocumentContext';
 import { useTheme } from '../../context/Theme Context.tsx';
 import type { PurchaseOrderItem } from '../../context/DocumentContext';
+import { calculateTotals } from '../../utils/calculateTotals';
 import { pageThemes } from '../../data/pageThemes';
 
 export default function PurchaseOrderBuilder() {
@@ -55,9 +56,11 @@ export default function PurchaseOrderBuilder() {
     }));
   };
 
-  const subtotal = po.items.reduce((sum, item) => sum + item.total, 0);
-  const vatAmount = subtotal * (po.vatRate / 100);
-  const total = subtotal + vatAmount;
+  const { subtotal, tax: vatAmount, total } = calculateTotals(
+    po.items,
+    (item) => item.total,
+    po.vatRate
+  );
 
   return (
     <div className={`min-h-screen ${isDark ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] ${isDark ? 'text-slate-100' : 'text-slate-800'} pb-16`}>

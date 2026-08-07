@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDocument } from '../../context/DocumentContext';
 import { useTheme } from '../../context/Theme Context.tsx';
 import type { QuoteItem } from '../../context/DocumentContext';
+import { calculateTotals, QUOTE_TAX_RATE_PERCENT } from '../../utils/calculateTotals';
 import { pageThemes } from '../../data/pageThemes';
 
 export default function QuoteBuilder() {
@@ -36,9 +37,11 @@ export default function QuoteBuilder() {
     }));
   };
 
-  const subtotal = quote.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-  const tax = subtotal * 0.15;
-  const total = subtotal + tax;
+  const { subtotal, tax, total } = calculateTotals(
+    quote.items,
+    (item) => item.quantity * item.unitPrice,
+    QUOTE_TAX_RATE_PERCENT
+  );
 
   return (
     <div className={`min-h-screen ${isDark ? pageTheme.dark : pageTheme.light} font-sans ${isDark ? 'text-slate-100' : 'text-slate-800'} flex flex-col`}>

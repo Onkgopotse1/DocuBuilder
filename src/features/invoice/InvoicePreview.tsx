@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
 import { useTheme } from "../../context/Theme Context.tsx";
 import { exportPDF } from "../../utils/PDF.Generator";
+import { calculateTotals } from "../../utils/calculateTotals";
 import { pageThemes } from "../../data/pageThemes";
 
 export default function InvoicePreview() {
@@ -14,9 +15,11 @@ const pageTheme = pageThemes.invoice;
   const { document } = useDocument();
   const invoice = document.invoice;
 
-  const subtotal = invoice.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-  const tax = subtotal * (invoice.taxRate / 100);
-  const total = subtotal + tax;
+  const { subtotal, tax, total } = calculateTotals(
+    invoice.items,
+    (item) => item.quantity * item.unitPrice,
+    invoice.taxRate
+  );
 //---------------------
 
 //-----this function is responsible for exporting the invoice as a PDF when the download button is clicked-----------------

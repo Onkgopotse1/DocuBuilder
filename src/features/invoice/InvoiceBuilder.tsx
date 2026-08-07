@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import  { useDocument } from "../../context/DocumentContext";
 import { useTheme } from "../../context/Theme Context.tsx";
 import type { InvoiceItem } from "../../context/DocumentContext";
+import { calculateTotals } from "../../utils/calculateTotals";
 import { pageThemes } from "../../data/pageThemes";
 
 export default function InvoiceBuilder() {
@@ -36,9 +37,11 @@ export default function InvoiceBuilder() {
     }));
   };
 
-  const subtotal = invoice.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-  const tax = subtotal * (invoice.taxRate / 100);
-  const total = subtotal + tax;
+  const { subtotal, tax, total } = calculateTotals(
+    invoice.items,
+    (item) => item.quantity * item.unitPrice,
+    invoice.taxRate
+  );
 
   return (
     <div className={`min-h-screen ${isDark ? pageTheme.dark : pageTheme.light} font-['Inter',system-ui,sans-serif] ${isDark ? 'text-slate-100' : 'text-slate-800'} pb-12`}>

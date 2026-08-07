@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useDocument } from "../../context/DocumentContext";
 import { useTheme } from "../../context/Theme Context.tsx";
 import type { ReceiptItem } from "../../context/DocumentContext";
+import { calculateTotals } from "../../utils/calculateTotals";
 import { pageThemes } from "../../data/pageThemes";  
 
 export default function ReceiptBuilder() {
@@ -39,9 +40,11 @@ export default function ReceiptBuilder() {
     }));
   };
 
-  const subtotal = receipt.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-  const tax = subtotal * (receipt.taxRate / 100);
-  const total = subtotal + tax;
+  const { subtotal, tax, total } = calculateTotals(
+    receipt.items,
+    (item) => item.quantity * item.unitPrice,
+    receipt.taxRate
+  );
 
   return (
     <div className={`min-h-screen ${isDark ? pageTheme.dark : pageTheme.light} font-sans ${isDark ? 'text-slate-100' : 'text-slate-800'} pb-12`}>
