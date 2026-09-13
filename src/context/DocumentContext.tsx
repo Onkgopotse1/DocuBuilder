@@ -233,7 +233,7 @@ export interface DocumentType {
 }
 
 // ==================== INITIAL DEFAULTS ====================
-const defaultInvoice: Invoice = {
+export const defaultInvoice: Invoice = {
   clientName: "",
   clientEmail: "",
   clientAddress: "",
@@ -243,7 +243,7 @@ const defaultInvoice: Invoice = {
   items: [{ description: "", quantity: 1, unitPrice: 0 }],
 };
 
-const defaultQuote: Quote = {
+export const defaultQuote: Quote = {
   companyName: "",
   companyEmail: "",
   companyAddress: "",
@@ -257,7 +257,7 @@ const defaultQuote: Quote = {
   items: [{ description: "", quantity: 1, unitPrice: 0 }],
 };
 
-const defaultContract: Contract = {
+export const defaultContract: Contract = {
   documentTitle: "",
   effectiveDate: new Date().toISOString().slice(0, 10),
   governingLaw: "",
@@ -270,7 +270,7 @@ const defaultContract: Contract = {
   scope: "",
 };
 
-const defaultReceipt: Receipt = {
+export const defaultReceipt: Receipt = {
   customerName: "BrightWave Marketing",
   customerEmail: "contact@brightwave.com",
   receiptNumber: "RCT-1002",
@@ -281,7 +281,7 @@ const defaultReceipt: Receipt = {
   items: [{ description: "Web Development Retainer", quantity: 1, unitPrice: 15000 }],
 };
 
-const defaultReport: Report = {
+export const defaultReport: Report = {
   title: "Q2 Financial Summary",
   type: "Financial Summary",
   reportNumber: "RPT-2025-001",
@@ -302,7 +302,7 @@ const defaultReport: Report = {
     "Strong revenue growth in Q2 driven by web development services. Expenses remain within budget. Net profit margin of 68% achieved for the quarter.",
 };
 
-const defaultExpense: Expense = {
+export const defaultExpense: Expense = {
   claimantName: "John Mokoena",
   claimantRole: "Sales",
   claimantEmail: "john@email.com",
@@ -320,7 +320,7 @@ const defaultExpense: Expense = {
   notes: "Business-related travel, meals, and software expenses incurred during client engagements and project delivery for the month of June 2025.",
 };
 
-const defaultTimesheet: Timesheet = {
+export const defaultTimesheet: Timesheet = {
   employeeName: "John Mokoena",
   jobTitle: "Frontend Developer",
   department: "Engineering",
@@ -338,7 +338,7 @@ const defaultTimesheet: Timesheet = {
   notes: "Public holiday on Monday? No, but took Friday off for training.",
 };
 
-const defaultCreditNote: CreditNote = {
+export const defaultCreditNote: CreditNote = {
   creditNoteNumber: "CN-2025-001",
   issueDate: "2025-04-20",
   originalInvoiceNumber: "INV-2025-042",
@@ -357,7 +357,7 @@ const defaultCreditNote: CreditNote = {
   ],
 };
 
-const defaultDeliveryNote: DeliveryNote = {
+export const defaultDeliveryNote: DeliveryNote = {
   dnNumber: "DN-2025-001",
   date: new Date().toISOString().slice(0, 10),
   poReference: "PO-2025-055",
@@ -380,7 +380,7 @@ const defaultDeliveryNote: DeliveryNote = {
   instructions: "Fragile items – handle with care. Call ahead 30min before arrival.",
 };
 
-const defaultPurchaseOrder: PurchaseOrder = {
+export const defaultPurchaseOrder: PurchaseOrder = {
   poNumber: "PO-2025-001",
   issueDate: new Date().toISOString().slice(0, 10),
   requiredBy: new Date(Date.now() + 10 * 86400000).toISOString().slice(0, 10),
@@ -403,7 +403,7 @@ const defaultPurchaseOrder: PurchaseOrder = {
   notes: "Payment due within 30 days of delivery. All items subject to inspection on receipt. Please reference PO-2025-001 on all correspondence and invoices.",
 };
 
-const defaultDocument: DocumentType = {
+export const defaultDocument: DocumentType = {
   invoice: defaultInvoice,
   quote: defaultQuote,
   contract: defaultContract,
