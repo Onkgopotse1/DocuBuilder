@@ -103,4 +103,26 @@ describe("exportPDF", () => {
     expect(container.className).toBe("rounded-xl");
     expect(scrollToSpy).toHaveBeenCalled();
   });
+
+  test("restores DOM state when canvas rendering fails", async () => {
+    const container = document.createElement("div");
+    container.id = "pdf-target";
+    container.className = "rounded-xl";
+    container.style.display = "block";
+
+    const button = document.createElement("button");
+    button.style.display = "inline-block";
+    container.appendChild(button);
+    document.body.appendChild(container);
+
+    vi.mocked(html2canvas).mockRejectedValueOnce(new Error("canvas failed"));
+
+    await expect(exportPDF("pdf-target", "output-file")).rejects.toThrow(
+      "PDF generation failed: canvas failed"
+    );
+
+    expect(button.style.display).toBe("inline-block");
+    expect(container.className).toBe("rounded-xl");
+    expect(container.style.display).toBe("block");
+  });
 });
