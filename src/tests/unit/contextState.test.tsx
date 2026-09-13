@@ -18,6 +18,12 @@ import {
 import { ThemeProvider, useTheme } from '../../context/Theme Context.tsx';
 
 describe('DocumentContext', () => {
+  it('throws when useDocument is used without a provider', () => {
+    expect(() => renderHook(() => useDocument())).toThrow(
+      'useDocument must be used within a DocumentProvider'
+    );
+  });
+
   it('defaults match the canonical default values', () => {
     const { result } = renderHook(() => useDocument(), {
       wrapper: DocumentProvider,
@@ -83,6 +89,12 @@ describe('ThemeContext', () => {
 
     expect(result.current.theme).toBe('dark');
     expect(document.documentElement.classList.contains('dark')).toBe(true);
+  });
+
+  it('throws when useTheme is used without a provider', () => {
+    expect(() => renderHook(() => useTheme())).toThrow(
+      'useTheme must be used inside a ThemeProvider'
+    );
   });
 
   it('toggleTheme flips between light and dark and persists the value', () => {
