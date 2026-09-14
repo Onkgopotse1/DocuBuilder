@@ -50,6 +50,7 @@ export default function Home() {
           {builders.map((builder) => (
             <div
               key={builder.id}
+              data-testid="builder-card"
               className={`group rounded-[1.75rem] p-6 pb-7 transition-all duration-300 cursor-pointer shadow-lg border flex flex-col h-full hover:-translate-y-1 hover:shadow-2xl ${cardBackground} card-hover`}
               onClick={() => navigate(`${builder.path}`)}
             >
