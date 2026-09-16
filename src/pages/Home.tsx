@@ -48,10 +48,11 @@ export default function Home() {
       <div className="flex-1 min-h-0 overflow-y-auto">
         <div className="grid gap-3 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 grid-section">
           {builders.map((builder) => (
-            <div
+            <button
+              type="button"
               key={builder.id}
               data-testid="builder-card"
-              className={`group rounded-[1.75rem] p-6 pb-7 transition-all duration-300 cursor-pointer shadow-lg border flex flex-col h-full hover:-translate-y-1 hover:shadow-2xl ${cardBackground} card-hover`}
+              className={`group rounded-[1.75rem] p-6 pb-7 text-left transition-all duration-300 cursor-pointer shadow-lg border flex flex-col h-full hover:-translate-y-1 hover:shadow-2xl ${cardBackground} card-hover`}
               onClick={() => navigate(`${builder.path}`)}
             >
               <div className="bg-blue-50 w-14 h-14 flex items-center justify-center rounded-xl mb-5 group-hover:bg-blue-600 transition-colors duration-300 icon-hover">
@@ -66,7 +67,7 @@ export default function Home() {
               <div className={`inline-flex items-center gap-2 font-semibold text-xs ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
                 Launch tool <i className="fas fa-arrow-right transition-transform duration-200"></i>
               </div>
-            </div>
+            </button>
           ))}
         </div>
 
