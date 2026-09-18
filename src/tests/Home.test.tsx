@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { test, expect, describe, beforeEach, vi } from "vitest";
+import { test, expect, describe, beforeEach, afterEach, vi } from "vitest";
 import { useEffect } from "react";
 import Home from "../pages/Home";
 import { builders } from "../data/builders";
@@ -83,12 +83,183 @@ describe("Rendering Home Component", () => {
     });
   });
 
-  test("applies dark mode styles when the theme is set to dark", async () => {
+  test("applies all dark mode style branches", async () => {
     renderHome("dark");
 
     await waitFor(() => {
-      expect(document.querySelector(".home-container")).toHaveClass("bg-indigo-950");
+      const homeContainer = document.querySelector(".home-container");
+      const panel = homeContainer?.firstElementChild;
+      const header = document.querySelector(".header-section");
+      const card = screen.getAllByTestId("builder-card")[0];
+      const cardHeading = card.querySelector("h3");
+      const cardDescription = card.querySelector("div.flex-1");
+      const launchText = card.querySelector("div.inline-flex");
+      const buttons = document.querySelectorAll(".buttons-section button");
+      const readinessBadge = document.querySelector(".header-section > div:last-child");
+
+      expect(homeContainer).toHaveClass("bg-indigo-950");
+      expect(panel).toHaveClass("bg-slate-900/95");
+      expect(header).toHaveClass("bg-slate-800/80");
+      expect(card).toHaveClass(
+        "bg-slate-800",
+        "border-slate-700",
+        "shadow-slate-950/30",
+        "hover:border-blue-400/40"
+      );
+      expect(cardHeading).toHaveClass("text-slate-100");
+      expect(cardDescription).toHaveClass("text-slate-400");
+      expect(launchText).toHaveClass("text-blue-400");
+      expect(buttons).toHaveLength(3);
+      buttons.forEach((button) => {
+        expect(button).toHaveClass(
+          "bg-slate-800",
+          "text-slate-200",
+          "hover:bg-slate-700",
+          "hover:text-blue-300"
+        );
+      });
+      expect(readinessBadge).toHaveClass("text-slate-200", "bg-slate-800");
     });
+  });
+
+  test("applies all light mode style branches", async () => {
+    renderHome("light");
+
+    await waitFor(() => {
+      const homeContainer = document.querySelector(".home-container");
+      const panel = homeContainer?.firstElementChild;
+      const header = document.querySelector(".header-section");
+      const card = screen.getAllByTestId("builder-card")[0];
+      const cardHeading = card.querySelector("h3");
+      const cardDescription = card.querySelector("div.flex-1");
+      const launchText = card.querySelector("div.inline-flex");
+      const buttons = document.querySelectorAll(".buttons-section button");
+      const readinessBadge = document.querySelector(".header-section > div:last-child");
+
+      expect(homeContainer).toHaveClass("bg-slate-100");
+      expect(panel).toHaveClass("bg-white/90");
+      expect(header).toHaveClass("bg-slate-50/90");
+      expect(card).toHaveClass(
+        "bg-white",
+        "border-slate-300/50",
+        "hover:border-blue-200"
+      );
+      expect(cardHeading).toHaveClass("text-slate-900");
+      expect(cardDescription).toHaveClass("text-slate-600");
+      expect(launchText).toHaveClass("text-blue-600");
+      expect(buttons).toHaveLength(3);
+      buttons.forEach((button) => {
+        expect(button).toHaveClass("bg-slate-50", "text-slate-700", "hover:bg-white", "hover:text-blue-800");
+      });
+      expect(readinessBadge).toHaveClass("text-slate-600", "bg-blue-50");
+    });
+  });
+
+  test("updates all theme-derived data without changing builder data or navigation", async () => {
+    const ThemeUpdateHarness = () => {
+      const { setTheme } = useTheme();
+
+      useEffect(() => {
+        setTheme("light");
+      }, []);
+
+      return (
+        <>
+          <button type="button" data-testid="set-dark" onClick={() => setTheme("dark")}>
+            Set dark
+          </button>
+          <button type="button" data-testid="set-light" onClick={() => setTheme("light")}>
+            Set light
+          </button>
+          <Home />
+        </>
+      );
+    };
+
+    render(
+      <ThemeProvider>
+        <MemoryRouter>
+          <ThemeUpdateHarness />
+        </MemoryRouter>
+      </ThemeProvider>
+    );
+
+    const getBuilderSnapshot = () =>
+      screen.getAllByTestId("builder-card").map((card) => ({
+        name: card.querySelector("h3")?.textContent,
+        description: card.querySelector("div.flex-1")?.textContent,
+        imageSrc: card.querySelector("img")?.getAttribute("src"),
+        imageAlt: card.querySelector("img")?.getAttribute("alt"),
+      }));
+
+    await waitFor(() => {
+      expect(document.querySelector(".home-container")).toHaveClass("bg-slate-100");
+    });
+
+    const lightSnapshot = getBuilderSnapshot();
+    expect(lightSnapshot).toHaveLength(builders.length);
+
+    fireEvent.click(screen.getByTestId("set-dark"));
+
+    await waitFor(() => {
+      const homeContainer = document.querySelector(".home-container");
+      const panel = homeContainer?.firstElementChild;
+      const header = document.querySelector(".header-section");
+      const card = screen.getAllByTestId("builder-card")[0];
+      const buttons = document.querySelectorAll(".buttons-section button");
+      const readinessBadge = document.querySelector(".header-section > div:last-child");
+
+      expect(homeContainer).toHaveClass("bg-indigo-950");
+      expect(panel).toHaveClass("bg-slate-900/95");
+      expect(header).toHaveClass("bg-slate-800/80");
+      expect(card).toHaveClass(
+        "bg-slate-800",
+        "border-slate-700",
+        "shadow-slate-950/30",
+        "hover:border-blue-400/40"
+      );
+      expect(card.querySelector("h3")).toHaveClass("text-slate-100");
+      expect(card.querySelector("div.flex-1")).toHaveClass("text-slate-400");
+      expect(card.querySelector("div.inline-flex")).toHaveClass("text-blue-400");
+      buttons.forEach((button) => {
+        expect(button).toHaveClass(
+          "bg-slate-800",
+          "text-slate-200",
+          "hover:bg-slate-700",
+          "hover:text-blue-300"
+        );
+      });
+      expect(readinessBadge).toHaveClass("text-slate-200", "bg-slate-800");
+    });
+
+    expect(getBuilderSnapshot()).toEqual(lightSnapshot);
+    expect(mockNavigate).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByTestId("set-light"));
+
+    await waitFor(() => {
+      const homeContainer = document.querySelector(".home-container");
+      const panel = homeContainer?.firstElementChild;
+      const header = document.querySelector(".header-section");
+      const card = screen.getAllByTestId("builder-card")[0];
+      const buttons = document.querySelectorAll(".buttons-section button");
+      const readinessBadge = document.querySelector(".header-section > div:last-child");
+
+      expect(homeContainer).toHaveClass("bg-slate-100");
+      expect(panel).toHaveClass("bg-white/90");
+      expect(header).toHaveClass("bg-slate-50/90");
+      expect(card).toHaveClass("bg-white", "border-slate-300/50", "hover:border-blue-200");
+      expect(card.querySelector("h3")).toHaveClass("text-slate-900");
+      expect(card.querySelector("div.flex-1")).toHaveClass("text-slate-600");
+      expect(card.querySelector("div.inline-flex")).toHaveClass("text-blue-600");
+      buttons.forEach((button) => {
+        expect(button).toHaveClass("bg-slate-50", "text-slate-700", "hover:bg-white", "hover:text-blue-800");
+      });
+      expect(readinessBadge).toHaveClass("text-slate-600", "bg-blue-50");
+    });
+
+    expect(getBuilderSnapshot()).toEqual(lightSnapshot);
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
   test("renders Settings, Help, and About buttons", () => {
@@ -322,4 +493,94 @@ describe("Home data flow", () => {
       expect(mockNavigate).toHaveBeenCalledWith(expectedPath);
     }
   );
+
+  test("renders correctly when the builder collection is empty", async () => {
+    vi.resetModules();
+    vi.doMock("../data/builders", () => ({ builders: [] }));
+
+    const [{ default: EmptyHome }, { ThemeProvider: EmptyThemeProvider }, { MemoryRouter: EmptyMemoryRouter }] =
+      await Promise.all([
+        import("../pages/Home"),
+        import("../context/Theme Context.tsx"),
+        import("react-router-dom"),
+      ]);
+
+    mockNavigate.mockClear();
+
+    render(
+      <EmptyThemeProvider>
+        <EmptyMemoryRouter>
+          <EmptyHome />
+        </EmptyMemoryRouter>
+      </EmptyThemeProvider>
+    );
+
+    expect(screen.queryAllByTestId("builder-card")).toHaveLength(0);
+    expect(screen.getByText("DocuBuilder")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /settings/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /help/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /about/i })).toBeInTheDocument();
+    expect(screen.getByText("Click any card to open the builder")).toBeInTheDocument();
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+});
+
+describe("Home default theme flow", () => {
+  beforeEach(() => {
+    mockNavigate.mockClear();
+    window.localStorage.removeItem("docubuilder-theme");
+  });
+
+  afterEach(() => {
+    window.localStorage.removeItem("docubuilder-theme");
+  });
+
+  const renderHomeWithStoredTheme = () =>
+    render(
+      <ThemeProvider>
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      </ThemeProvider>
+    );
+
+  test("uses light theme when no stored theme exists", async () => {
+    renderHomeWithStoredTheme();
+
+    await waitFor(() => {
+      expect(document.querySelector(".home-container")).toHaveClass("bg-slate-100");
+    });
+  });
+
+  test("uses dark theme when dark is stored", async () => {
+    window.localStorage.setItem("docubuilder-theme", "dark");
+
+    renderHomeWithStoredTheme();
+
+    await waitFor(() => {
+      expect(document.querySelector(".home-container")).toHaveClass("bg-indigo-950");
+    });
+  });
+
+  test("falls back to light theme for an invalid stored value", async () => {
+    window.localStorage.setItem("docubuilder-theme", "invalid");
+
+    renderHomeWithStoredTheme();
+
+    await waitFor(() => {
+      expect(document.querySelector(".home-container")).toHaveClass("bg-slate-100");
+    });
+  });
+});
+
+describe("Home context boundary", () => {
+  test("throws when rendered without ThemeProvider", () => {
+    expect(() =>
+      render(
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      )
+    ).toThrow("useTheme must be used inside a ThemeProvider");
+  });
 });
