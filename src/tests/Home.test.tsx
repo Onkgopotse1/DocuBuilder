@@ -264,3 +264,62 @@ describe("Rendering Home Component", () => {
     expect(mockNavigate).not.toHaveBeenCalled();
   });
  });
+
+describe("Home data flow", () => {
+  beforeEach(() => {
+    mockNavigate.mockClear();
+  });
+
+  test("maps every builder field to its card in source order", () => {
+    renderHome();
+
+    const cards = screen.getAllByTestId("builder-card");
+
+    expect(cards).toHaveLength(builders.length);
+    expect(new Set(builders.map(({ id }) => id)).size).toBe(builders.length);
+
+    cards.forEach((card, index) => {
+      const builder = builders[index];
+      const heading = card.querySelector("h3");
+      const description = card.querySelector("div.flex-1");
+      const image = card.querySelector("img");
+
+      expect(heading).toHaveTextContent(builder.name);
+      expect(description).toHaveTextContent(builder.desc);
+      expect(image).toHaveAttribute("src", builder.image);
+      expect(image).toHaveAttribute("alt", builder.name);
+    });
+  });
+
+  test("preserves the builder card data when rerendered", () => {
+    const { rerender } = renderHome();
+    const initialCards = screen.getAllByTestId("builder-card");
+
+    rerender(
+      <ThemeProvider>
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      </ThemeProvider>
+    );
+
+    const rerenderedCards = screen.getAllByTestId("builder-card");
+
+    expect(rerenderedCards).toHaveLength(builders.length);
+    rerenderedCards.forEach((card, index) => {
+      expect(card).toHaveAttribute("data-testid", initialCards[index].dataset.testid);
+      expect(card.querySelector("h3")).toHaveTextContent(builders[index].name);
+    });
+  });
+
+  test.each(builders.map(({ name, path }) => [name, path]))(
+    "uses the %s builder path as its navigation target",
+    (builderName, expectedPath) => {
+      renderHome();
+
+      fireEvent.click(screen.getByRole("button", { name: new RegExp(builderName as string, "i") }));
+
+      expect(mockNavigate).toHaveBeenCalledWith(expectedPath);
+    }
+  );
+});
