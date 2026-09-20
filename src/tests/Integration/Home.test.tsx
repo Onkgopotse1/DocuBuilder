@@ -2,10 +2,10 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { test, expect, describe, beforeEach, afterEach, vi } from "vitest";
 import { useEffect } from "react";
-import Home from "../pages/Home";
-import { builders } from "../data/builders";
+import Home from "../../pages/Home";
+import { builders } from "../../data/builders";
 import { MemoryRouter } from "react-router-dom";
-import { ThemeProvider, useTheme } from "../context/Theme Context.tsx";
+import { ThemeProvider, useTheme } from "../../context/Theme Context.tsx";
 
 const mockNavigate = vi.fn();
 
@@ -496,12 +496,12 @@ describe("Home data flow", () => {
 
   test("renders correctly when the builder collection is empty", async () => {
     vi.resetModules();
-    vi.doMock("../data/builders", () => ({ builders: [] }));
+    vi.doMock("../../data/builders", () => ({ builders: [] }));
 
     const [{ default: EmptyHome }, { ThemeProvider: EmptyThemeProvider }, { MemoryRouter: EmptyMemoryRouter }] =
       await Promise.all([
-        import("../pages/Home"),
-        import("../context/Theme Context.tsx"),
+        import("../../pages/Home"),
+        import("../../context/Theme Context.tsx"),
         import("react-router-dom"),
       ]);
 
