@@ -5,11 +5,13 @@ import InvoiceBuilder from '../../features/invoice/InvoiceBuilder';
 import { DocumentProvider } from '../../context/DocumentContext';
 import { ThemeProvider } from '../../context/Theme Context.tsx';
 
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
+const mockNavigate = vi.fn();
+
+vi.mock("react-router-dom", async () => {
+  const actual = await vi.importActual("react-router-dom");
   return {
     ...actual,
-    useNavigate: () => vi.fn(),
+    useNavigate: () => mockNavigate,
   };
 });
 
@@ -73,18 +75,6 @@ describe('rendering InvoiceBuilder component', () => {
     expect(within(itemRow).getByRole('button', { name: '✕' })).toBeInTheDocument();
   });
 
-  test('renders and allows clicking the Add New Item button', () => {
-    renderInvoiceBuilder();
-
-    const addItemButton = screen.getByRole('button', { name: /add new item/i });
-    expect(addItemButton).toBeVisible();
-    expect(addItemButton).toBeEnabled();
-
-    fireEvent.click(addItemButton);
-
-    expect(screen.getAllByRole('table')[0].querySelectorAll('tbody tr')).toHaveLength(2);
-  });
-
   test('renders the totals section with its labels and initial values', () => {
     renderInvoiceBuilder();
 
@@ -138,4 +128,73 @@ describe('rendering InvoiceBuilder component', () => {
     expect(screen.getByRole('navigation')).toHaveClass('bg-blue-950', 'border-slate-700');
   });
 
+});
+
+describe('InvoiceBuilder interaction', () => {
+ describe('navigation buttons', () => {
+
+      test('clicking the back button navigates to /', () => {
+      mockNavigate.mockClear();
+      renderInvoiceBuilder();
+
+      fireEvent.click(screen.getByText('←'));
+
+      expect(mockNavigate).toHaveBeenCalledTimes(1);
+      expect(mockNavigate).toHaveBeenCalledWith('/');
+    });
+
+    test('clicking the preview button navigates to /invoice-preview', () => {
+      mockNavigate.mockClear();
+      renderInvoiceBuilder();
+
+      fireEvent.click(screen.getByRole('button', { name: /preview/i }));
+
+      expect(mockNavigate).toHaveBeenCalledTimes(1);
+      expect(mockNavigate).toHaveBeenCalledWith('/invoice-preview');
+    });
+
+    test("clicking the download button navigates to /invoice-download", () => {
+     mockNavigate.mockClear();
+     renderInvoiceBuilder();
+
+     fireEvent.click(screen.getByRole('button', { name: /download/i }));
+
+     expect(mockNavigate).toHaveBeenCalledTimes(1);
+     expect(mockNavigate).toHaveBeenCalledWith('/invoice-preview?download=1');
+    });
+
+ });
+
+  describe('Invoice fields', () => {
+    test('editing the client name updates the field value', () => {
+      renderInvoiceBuilder();
+
+      const ClientCompany = screen.getByPlaceholderText('e.g. Acme Corp');
+      fireEvent.change(ClientCompany, { target: { value: 'Acme Corp' } });
+
+      expect(ClientCompany).toHaveValue('Acme Corp');
+    });
+
+    test("Client Email", () => {
+      renderInvoiceBuilder();
+
+      const ClientEmail = screen.getByPlaceholderText('client@example.com');
+      fireEvent.change(ClientEmail, { target: { value: 'client@example.com' } });
+
+      expect(ClientEmail).toHaveValue('client@example.com');
+    });
+
+  });
+
+  test('adds a new invoice item when the Add New Item button is clicked', () => {
+    renderInvoiceBuilder();
+
+    const addItemButton = screen.getByRole('button', { name: /add new item/i });
+    expect(addItemButton).toBeVisible();
+    expect(addItemButton).toBeEnabled();
+
+    fireEvent.click(addItemButton);
+
+    expect(screen.getAllByRole('table')[0].querySelectorAll('tbody tr')).toHaveLength(2);
+  });
 });
