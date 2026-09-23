@@ -87,8 +87,8 @@ export default function InvoiceBuilder() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
               <div className="space-y-2">
-                <label className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'} ml-1`}>Invoice Number</label>
-                <input type="text" value={invoice.invoiceNumber} onChange={(e) => updateField("invoiceNumber", e.target.value)} className={`w-full px-4 py-3 border ${isDark ? 'bg-slate-800 border-slate-600 text-slate-100' : 'bg-slate-50/50 border-slate-300 text-slate-800'} rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none`} />
+                <label htmlFor="invoice-number" className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'} ml-1`}>Invoice Number</label>
+                <input id="invoice-number" type="text" value={invoice.invoiceNumber} onChange={(e) => updateField("invoiceNumber", e.target.value)} className={`w-full px-4 py-3 border ${isDark ? 'bg-slate-800 border-slate-600 text-slate-100' : 'bg-slate-50/50 border-slate-300 text-slate-800'} rounded-xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none`} />
               </div>
               <div className="space-y-2">
                 <label className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'} ml-1`}>Invoice Date</label>

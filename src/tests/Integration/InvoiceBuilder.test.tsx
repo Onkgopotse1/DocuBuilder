@@ -166,6 +166,7 @@ describe('InvoiceBuilder interaction', () => {
  });
 
   describe('Invoice fields', () => {
+
     test('editing the client name updates the field value', () => {
       renderInvoiceBuilder();
 
@@ -175,7 +176,7 @@ describe('InvoiceBuilder interaction', () => {
       expect(ClientCompany).toHaveValue('Acme Corp');
     });
 
-    test("Client Email", () => {
+    test("Editing Client Email updates its value", () => {
       renderInvoiceBuilder();
 
       const ClientEmail = screen.getByPlaceholderText('client@example.com');
@@ -184,6 +185,91 @@ describe('InvoiceBuilder interaction', () => {
       expect(ClientEmail).toHaveValue('client@example.com');
     });
 
+    test("Editing Billing Address updates its value", () => {
+      renderInvoiceBuilder();
+      
+      const BillingAddress = screen.getByPlaceholderText('Street address, City, Country');
+      fireEvent.change(BillingAddress ,{target: {value: 'Street address, City, Country'}})
+      
+      expect(BillingAddress).toHaveValue('Street address, City, Country')
+    });
+
+    test('Editing Invoice Number updates its value', () => {
+      renderInvoiceBuilder();
+
+      const InvoiceNumber = screen.getByRole('textbox', { name: /Invoice Number/i });
+      fireEvent.change(InvoiceNumber, { target: { name: 'Invoice Number' } });
+
+      expect(InvoiceNumber).toHaveValue('Invoice Number');
+    })
+
+  });
+
+  describe('totals calculations', () => {
+    test('changing quantity recalculates the subtotal and changing unit price recalculates the subtotal', () => {
+      renderInvoiceBuilder();
+
+      const [, quantityInput, unitPriceInput] = screen.getAllByRole('spinbutton');
+
+      fireEvent.change(quantityInput, { target: { value: '2' } });
+      fireEvent.change(unitPriceInput, { target: { value: '100' } });
+
+      expect(screen.getByText('R 200.00')).toBeInTheDocument();
+    });
+
+    test('changing tax rate recalculates the tax and the total equals subtotal plus tax', () => {
+      renderInvoiceBuilder();
+
+      const [taxInput, quantityInput, unitPriceInput] = screen.getAllByRole('spinbutton');
+
+      fireEvent.change(quantityInput, { target: { value: '2' } });
+      fireEvent.change(unitPriceInput, { target: { value: '100' } });
+      fireEvent.change(taxInput, { target: { value: '15' } });
+
+      expect(screen.getByText('Tax (15%)')).toBeInTheDocument();
+      expect(screen.getByText('R 30.00')).toBeInTheDocument();
+      expect(screen.getByText('R 230.00')).toBeInTheDocument();
+    });
+
+    test('adding an item with values includes it in the totals and removing an item excludes it from the totals', () => {
+      renderInvoiceBuilder();
+
+      fireEvent.click(screen.getByRole('button', { name: /add new item/i }));
+
+      const allSpinButtons = screen.getAllByRole('spinbutton');
+      const quantityInput = allSpinButtons[1];
+      const unitPriceInput = allSpinButtons[2];
+      const secondQuantityInput = allSpinButtons[3];
+      const secondUnitPriceInput = allSpinButtons[4];
+
+      fireEvent.change(quantityInput, { target: { value: '2' } });
+      fireEvent.change(unitPriceInput, { target: { value: '50' } });
+      fireEvent.change(secondQuantityInput, { target: { value: '3' } });
+      fireEvent.change(secondUnitPriceInput, { target: { value: '40' } });
+
+      expect(screen.getByText('R 220.00')).toBeInTheDocument();
+
+      const removeButtons = screen.getAllByRole('button', { name: '✕' });
+      fireEvent.click(removeButtons[1]);
+
+      expect(screen.getByText('R 100.00')).toBeInTheDocument();
+    });
+
+    test('zero quantity and zero unit price produce zero amounts and decimal values calculate correctly', () => {
+      renderInvoiceBuilder();
+
+      const [, quantityInput, unitPriceInput] = screen.getAllByRole('spinbutton');
+
+      fireEvent.change(quantityInput, { target: { value: '0' } });
+      fireEvent.change(unitPriceInput, { target: { value: '0' } });
+
+      expect(screen.getByText('R 0.00')).toBeInTheDocument();
+
+      fireEvent.change(quantityInput, { target: { value: '1.5' } });
+      fireEvent.change(unitPriceInput, { target: { value: '12.5' } });
+
+      expect(screen.getByText('R 18.75')).toBeInTheDocument();
+    });
   });
 
   test('adds a new invoice item when the Add New Item button is clicked', () => {
