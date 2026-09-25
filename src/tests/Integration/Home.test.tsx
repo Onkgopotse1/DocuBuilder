@@ -37,7 +37,7 @@ const renderHome = (theme: "light" | "dark" = "light") => {
   );
 };
 
-describe("Rendering Home Component", () => {
+describe("Rendering tests", () => {
   beforeEach(() => {
     mockNavigate.mockClear();
   });
@@ -155,6 +155,184 @@ describe("Rendering Home Component", () => {
     });
   });
 
+  test("renders Settings, Help, and About buttons", () => {
+    renderHome();
+
+    expect(screen.getByRole("button", { name: /settings/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /help/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /about/i })).toBeInTheDocument();
+  });
+
+  test("renders the footer instruction", () => {
+    renderHome();
+
+    expect(screen.getByText("Click any card to open the builder")).toBeInTheDocument();
+  });
+});
+
+describe("Interaction tests", () => {
+  beforeEach(() => {
+    mockNavigate.mockClear();
+  });
+
+  test.each(builders.map(({ name, path }) => [name, path]))(
+    "opens the %s when its card is clicked",
+    (builderName, expectedPath) => {
+      renderHome();
+
+      const builderCard = screen
+        .getByText(builderName)
+        .closest('[data-testid="builder-card"]');
+
+      expect(builderCard).toBeInTheDocument();
+
+      fireEvent.click(builderCard!);
+
+      expect(mockNavigate).toHaveBeenCalledTimes(1);
+      expect(mockNavigate).toHaveBeenCalledWith(expectedPath);
+    }
+  );
+
+  test("opens the Invoice Builder when its card is activated with Enter", async () => {
+    const user = userEvent.setup();
+    renderHome();
+
+    const invoiceCard = screen.getByRole("button", { name: /Invoice Builder/i });
+    invoiceCard.focus();
+
+    await user.keyboard("{Enter}");
+
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
+  });
+
+  test("opens the Invoice Builder when its card is activated with Space", async () => {
+    const user = userEvent.setup();
+    renderHome();
+
+    const invoiceCard = screen.getByRole("button", { name: /Invoice Builder/i });
+    invoiceCard.focus();
+
+    await user.keyboard(" ");
+
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
+  });
+
+  test("navigates when clicking the Invoice Builder name", () => {
+    renderHome();
+
+    fireEvent.click(screen.getByText("Invoice Builder"));
+
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
+  });
+
+  test("navigates when clicking the Invoice Builder description", () => {
+    renderHome();
+
+    fireEvent.click(screen.getByText("Create and download invoices as PDF."));
+
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
+  });
+
+  test("navigates when clicking the Invoice Builder image", () => {
+    renderHome();
+
+    fireEvent.click(screen.getByAltText("Invoice Builder"));
+
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
+  });
+
+  test("navigates when clicking the Launch tool text", () => {
+    renderHome();
+
+    fireEvent.click(screen.getAllByText("Launch tool")[0]);
+
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
+  });
+
+  test("navigates when clicking Settings", () => {
+    renderHome();
+    const settingsButton = screen.getByText(/settings/i);
+    fireEvent.click(settingsButton);
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith("/settings");
+  });
+
+  test("navigates when clicking Help", () => {
+    renderHome();
+    const helpButton = screen.getByText(/help/i);
+    fireEvent.click(helpButton);
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith("/settings?tab=help");
+  });
+
+  test("navigates when clicking About", () => {
+    renderHome();
+    const aboutButton = screen.getByText(/about/i);
+    fireEvent.click(aboutButton);
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith("/settings?tab=about");
+  });
+
+  test.each([
+    ["Settings", "/settings"],
+    ["Help", "/settings?tab=help"],
+    ["About", "/settings?tab=about"],
+  ])("does not trigger builder navigation when clicking %s", (buttonName, expectedPath) => {
+    renderHome();
+
+    fireEvent.click(screen.getByRole("button", { name: buttonName }));
+
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith(expectedPath);
+    builders.forEach(({ path }) => {
+      expect(mockNavigate).not.toHaveBeenCalledWith(path);
+    });
+  });
+
+  test("does not navigate when clicking the header title", () => {
+    renderHome();
+
+    fireEvent.click(screen.getByText("DocuBuilder"));
+
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  test("does not navigate when clicking the logo", () => {
+    renderHome();
+
+    fireEvent.click(screen.getByAltText("DocuBuilder"));
+
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  test("does not navigate when clicking the footer instruction", () => {
+    renderHome();
+
+    fireEvent.click(screen.getByText("Click any card to open the builder"));
+
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  test("does not navigate when clicking the device readiness text", () => {
+    renderHome();
+
+    fireEvent.click(screen.getByText("PC + mobile ready smart docs"));
+
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+});
+
+describe("Data flow tests", () => {
+  beforeEach(() => {
+    mockNavigate.mockClear();
+  });
+
   test("updates all theme-derived data without changing builder data or navigation", async () => {
     const ThemeUpdateHarness = () => {
       const { setTheme } = useTheme();
@@ -262,185 +440,6 @@ describe("Rendering Home Component", () => {
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  test("renders Settings, Help, and About buttons", () => {
-    renderHome();
-
-    expect(screen.getByRole("button", { name: /settings/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /help/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /about/i })).toBeInTheDocument();
-  });
-
-  test("renders the footer instruction", () => {
-    renderHome();
-
-    expect(screen.getByText("Click any card to open the builder")).toBeInTheDocument();
-  });
-});
-  
- describe("interaction testing", () => {
-  beforeEach(() => {
-    mockNavigate.mockClear();
-  });
-
-  test.each(builders.map(({ name, path }) => [name, path]))(
-    "opens the %s when its card is clicked",
-    (builderName, expectedPath) => {
-      renderHome();
-
-      const builderCard = screen
-      .getByText(builderName)
-      .closest('[data-testid="builder-card"]');
-
-      expect(builderCard).toBeInTheDocument();
-
-      fireEvent.click(builderCard!);
-
-      expect(mockNavigate).toHaveBeenCalledTimes(1);
-      expect(mockNavigate).toHaveBeenCalledWith(expectedPath);
-    }
-  );
-
-  test("opens the Invoice Builder when its card is activated with Enter", async () => {
-    const user = userEvent.setup();
-    renderHome();
-
-    const invoiceCard = screen.getByRole("button", { name: /Invoice Builder/i });
-    invoiceCard.focus();
-
-    await user.keyboard("{Enter}");
-
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
-  });
-
-  test("opens the Invoice Builder when its card is activated with Space", async () => {
-    const user = userEvent.setup();
-    renderHome();
-
-    const invoiceCard = screen.getByRole("button", { name: /Invoice Builder/i });
-    invoiceCard.focus();
-
-    await user.keyboard(" ");
-
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
-  });
-
-  test("navigates when clicking the Invoice Builder name", () => {
-    renderHome();
-
-    fireEvent.click(screen.getByText("Invoice Builder"));
-
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
-  });
-
-  test("navigates when clicking the Invoice Builder description", () => {
-    renderHome();
-
-    fireEvent.click(screen.getByText("Create and download invoices as PDF."));
-
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
-  });
-
-  test("navigates when clicking the Invoice Builder image", () => {
-    renderHome();
-
-    fireEvent.click(screen.getByAltText("Invoice Builder"));
-
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
-  });
-
-  test("navigates when clicking the Launch tool text", () => {
-    renderHome();
-
-    fireEvent.click(screen.getAllByText("Launch tool")[0]);
-
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith("invoice-builder");
-  });
-  
-
-  test("navigates when clicking Settings", () => {
-    renderHome();
-    const settingsButton = screen.getByText(/settings/i);
-    fireEvent.click(settingsButton);
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith("/settings");
-  });
-
-  test("navigates when clicking Help", () => {
-    renderHome();
-    const helpButton = screen.getByText(/help/i);
-    fireEvent.click(helpButton);
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith("/settings?tab=help");
-  });
-
-  test("navigates when clicking About", () => {
-    renderHome();
-    const aboutButton = screen.getByText(/about/i);
-    fireEvent.click(aboutButton);
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith("/settings?tab=about");
-  });
-
-  test.each([
-    ["Settings", "/settings"],
-    ["Help", "/settings?tab=help"],
-    ["About", "/settings?tab=about"],
-  ])("does not trigger builder navigation when clicking %s", (buttonName, expectedPath) => {
-    renderHome();
-
-    fireEvent.click(screen.getByRole("button", { name: buttonName }));
-
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith(expectedPath);
-    builders.forEach(({ path }) => {
-      expect(mockNavigate).not.toHaveBeenCalledWith(path);
-    });
-  });
-
-  test("does not navigate when clicking the header title", () => {
-    renderHome();
-
-    fireEvent.click(screen.getByText("DocuBuilder"));
-
-    expect(mockNavigate).not.toHaveBeenCalled();
-  });
-
-  test("does not navigate when clicking the logo", () => {
-    renderHome();
-
-    fireEvent.click(screen.getByAltText("DocuBuilder"));
-
-    expect(mockNavigate).not.toHaveBeenCalled();
-  });
-
-  test("does not navigate when clicking the footer instruction", () => {
-    renderHome();
-
-    fireEvent.click(screen.getByText("Click any card to open the builder"));
-
-    expect(mockNavigate).not.toHaveBeenCalled();
-  });
-
-  test("does not navigate when clicking the device readiness text", () => {
-    renderHome();
-
-    fireEvent.click(screen.getByText("PC + mobile ready smart docs"));
-
-    expect(mockNavigate).not.toHaveBeenCalled();
-  });
- });
-
-describe("Home data flow", () => {
-  beforeEach(() => {
-    mockNavigate.mockClear();
-  });
-
   test("maps every builder field to its card in source order", () => {
     renderHome();
 
@@ -523,64 +522,64 @@ describe("Home data flow", () => {
     expect(screen.getByText("Click any card to open the builder")).toBeInTheDocument();
     expect(mockNavigate).not.toHaveBeenCalled();
   });
-});
 
-describe("Home default theme flow", () => {
-  beforeEach(() => {
-    mockNavigate.mockClear();
-    window.localStorage.removeItem("docubuilder-theme");
-  });
-
-  afterEach(() => {
-    window.localStorage.removeItem("docubuilder-theme");
-  });
-
-  const renderHomeWithStoredTheme = () =>
-    render(
-      <ThemeProvider>
-        <MemoryRouter>
-          <Home />
-        </MemoryRouter>
-      </ThemeProvider>
-    );
-
-  test("uses light theme when no stored theme exists", async () => {
-    renderHomeWithStoredTheme();
-
-    await waitFor(() => {
-      expect(document.querySelector(".home-container")).toHaveClass("bg-slate-100");
+  describe("Theme default flow", () => {
+    beforeEach(() => {
+      mockNavigate.mockClear();
+      window.localStorage.removeItem("docubuilder-theme");
     });
-  });
 
-  test("uses dark theme when dark is stored", async () => {
-    window.localStorage.setItem("docubuilder-theme", "dark");
-
-    renderHomeWithStoredTheme();
-
-    await waitFor(() => {
-      expect(document.querySelector(".home-container")).toHaveClass("bg-indigo-950");
+    afterEach(() => {
+      window.localStorage.removeItem("docubuilder-theme");
     });
-  });
 
-  test("falls back to light theme for an invalid stored value", async () => {
-    window.localStorage.setItem("docubuilder-theme", "invalid");
-
-    renderHomeWithStoredTheme();
-
-    await waitFor(() => {
-      expect(document.querySelector(".home-container")).toHaveClass("bg-slate-100");
-    });
-  });
-});
-
-describe("Home context boundary", () => {
-  test("throws when rendered without ThemeProvider", () => {
-    expect(() =>
+    const renderHomeWithStoredTheme = () =>
       render(
-        <MemoryRouter>
-          <Home />
-        </MemoryRouter>
-      )
-    ).toThrow("useTheme must be used inside a ThemeProvider");
+        <ThemeProvider>
+          <MemoryRouter>
+            <Home />
+          </MemoryRouter>
+        </ThemeProvider>
+      );
+
+    test("uses light theme when no stored theme exists", async () => {
+      renderHomeWithStoredTheme();
+
+      await waitFor(() => {
+        expect(document.querySelector(".home-container")).toHaveClass("bg-slate-100");
+      });
+    });
+
+    test("uses dark theme when dark is stored", async () => {
+      window.localStorage.setItem("docubuilder-theme", "dark");
+
+      renderHomeWithStoredTheme();
+
+      await waitFor(() => {
+        expect(document.querySelector(".home-container")).toHaveClass("bg-indigo-950");
+      });
+    });
+
+    test("falls back to light theme for an invalid stored value", async () => {
+      window.localStorage.setItem("docubuilder-theme", "invalid");
+
+      renderHomeWithStoredTheme();
+
+      await waitFor(() => {
+        expect(document.querySelector(".home-container")).toHaveClass("bg-slate-100");
+      });
+    });
+  });
+
+  describe("Context boundary", () => {
+    test("throws when rendered without ThemeProvider", () => {
+      expect(() =>
+        render(
+          <MemoryRouter>
+            <Home />
+          </MemoryRouter>
+        )
+      ).toThrow("useTheme must be used inside a ThemeProvider");
+    });
   });
 });

@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import InvoiceBuilder from '../../features/invoice/InvoiceBuilder';
@@ -26,34 +25,6 @@ const renderInvoiceBuilder = () =>
       </ThemeProvider>
     </MemoryRouter>
   );
-
-const renderInvoiceBuilderWithThemeControls = (initialTheme: 'light' | 'dark' = 'light') => {
-  const ThemeSwitchHarness = () => {
-    const { setTheme } = useTheme();
-
-    useEffect(() => {
-      setTheme(initialTheme);
-    }, [initialTheme, setTheme]);
-
-    return (
-      <>
-        <button type="button" data-testid="set-light" onClick={() => setTheme('light')}>Set light</button>
-        <button type="button" data-testid="set-dark" onClick={() => setTheme('dark')}>Set dark</button>
-        <DocumentProvider>
-          <InvoiceBuilder />
-        </DocumentProvider>
-      </>
-    );
-  };
-
-  return render(
-    <MemoryRouter>
-      <ThemeProvider>
-        <ThemeSwitchHarness />
-      </ThemeProvider>
-    </MemoryRouter>
-  );
-};
 
 describe('rendering InvoiceBuilder component', () => {
   beforeEach(() => {
