@@ -76,19 +76,31 @@ export default function Home() {
             className={`${buttonClasses} text-base font-medium py-2.5 px-5 rounded-full inline-flex items-center gap-3 cursor-pointer transition-all duration-200 hover:-translate-y-0.5 button-hover`}
             onClick={() => navigate('/settings')}
           >
-            <i className="fas fa-sliders-h text-lg text-blue-500"></i> Settings
+            <svg aria-hidden="true" className="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3" />
+              <path d="M1 14h6m2-6h6m2 8h6" />
+            </svg>
+            Settings
           </button>
           <button
             className={`${buttonClasses} text-base font-medium py-2.5 px-5 rounded-full inline-flex items-center gap-3 cursor-pointer transition-all duration-200 hover:-translate-y-0.5 button-hover`}
             onClick={() => navigate('/settings?tab=help')}
           >
-            <i className="fas fa-question-circle text-lg text-blue-500"></i> Help
+            <svg aria-hidden="true" className="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3m.1 4h.01" />
+            </svg>
+            Help
           </button>
           <button
             className={`${buttonClasses} text-base font-medium py-2.5 px-5 rounded-full inline-flex items-center gap-3 cursor-pointer transition-all duration-200 hover:-translate-y-0.5 button-hover`}
             onClick={() => navigate('/settings?tab=about')}
           >
-            <i className="fas fa-info-circle text-lg text-blue-500"></i> About
+            <svg aria-hidden="true" className="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4m0-4h.01" />
+            </svg>
+            About
           </button>
         </div>
 

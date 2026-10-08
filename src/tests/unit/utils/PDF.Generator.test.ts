@@ -24,6 +24,7 @@ vi.mock("html2canvas", () => ({
   default: vi.fn(async () => ({
     width: 1000,
     height: 1500,
+    toDataURL: () => "data:image/png;base64,fake",
   })),
 }));
 
@@ -86,22 +87,32 @@ describe("exportPDF", () => {
 
     await exportPDF("pdf-target", "output-file");
 
-    expect(html2canvas).toHaveBeenCalledWith(container, {
+    expect(html2canvas).toHaveBeenCalledWith(container, expect.objectContaining({
       scale: 3,
       backgroundColor: "#ffffff",
       useCORS: true,
       logging: false,
-      windowWidth: container.scrollWidth,
-      windowHeight: container.scrollHeight,
-    });
+      ignoreElements: expect.any(Function),
+    }));
+    const renderOptions = vi.mocked(html2canvas).mock.calls[0]?.[1];
+    expect(renderOptions?.ignoreElements?.(button)).toBe(true);
+    expect(renderOptions?.ignoreElements?.(child)).toBe(false);
 
     expect(saveMock).toHaveBeenCalledWith("output-file.pdf");
-    expect(addImageMock).toHaveBeenCalled();
-    expect(addPageMock).toHaveBeenCalled();
+    expect(addImageMock).toHaveBeenCalledOnce();
+    expect(addImageMock).toHaveBeenCalledWith(
+      "data:image/png;base64,fake",
+      "PNG",
+      6,
+      0,
+      198,
+      297
+    );
+    expect(addPageMock).not.toHaveBeenCalled();
     expect(button.style.display).toBe("inline-block");
     expect(container.style.width).toBe("100px");
     expect(container.className).toBe("rounded-xl");
-    expect(scrollToSpy).toHaveBeenCalled();
+    expect(scrollToSpy).not.toHaveBeenCalled();
   });
 
   test("restores DOM state when canvas rendering fails", async () => {
